@@ -1,18 +1,20 @@
 /** ****************************************************************************
- *  Compilation:  javac Polynomial.java
- *  Execution:    java Polynomial
+ *  Compilation:  javac PolynomialF1.java
+ *  Execution:    java PolynomialF1
  *
  *  Polynomials Vector Form 1.
  *
  *  % java PolynomialF1
- *  zero(x)     = 0
  *  p(x)        = 4x^3 + 3x^2 + 2x + 1
  *  q(x)        = 3x^2 + 5
  *  p(x) + q(x) = 4x^3 + 6x^2 + 2x + 6
  *  p(x) * q(x) = 12x^5 + 9x^4 + 26x^3 + 18x^2 + 10x + 5
+ *  p(x) / q(x)
  *
  ***************************************************************************** */
 package polynomialprogram;
+
+import javax.swing.JOptionPane;
 
 /**
  * The {@code PolynomialF1} class represents a polynomial vector form 1.
@@ -24,22 +26,22 @@ package polynomialprogram;
  */
 public class PolynomialF1 {
 
-    private int degree;     // degree of polynomial (-1 for the zero polynomial)
+    private int degree;     // degree of polynomial
     private float[] coef;   // coefficients p(x) = sum { coef[i] * x^i }
 
     /**
      * Initializes a new polynomial x^b
      *
-     * @param n the exponent
+     * @param n the degree of the polynomial.
      * @throws IllegalArgumentException if {@code n} is negative
      */
     public PolynomialF1(int n) {
         if (n < 0) {
-            throw new IllegalArgumentException("exponent cannot be negative: " + n);
+            throw new IllegalArgumentException("degree cannot be negative: " + n);
         }
-        degree = n;
-        coef = new float[degree + 2];
-        coef[0] = degree;
+        this.degree = n;
+        this.coef = new float[this.degree + 2];
+        this.coef[0] = this.degree;
     }
 
     /**
@@ -49,6 +51,15 @@ public class PolynomialF1 {
      */
     public int getDegree() {
         return degree;
+    }
+
+    /**
+     * Sets the degree of this polynomial.
+     *
+     * @param n the degree of this polynomial
+     */
+    public void setDegree(int n) {
+        this.degree = n;
     }
 
     /**
@@ -69,15 +80,6 @@ public class PolynomialF1 {
      */
     public void setCoef(float a, int i) {
         coef[i] = a;
-    }
-
-    /**
-     * Get size of coefficient array
-     *
-     * @return the length of the array
-     */
-    public int getSizeCoef() {
-        return coef.length;
     }
 
     @Override
@@ -107,60 +109,121 @@ public class PolynomialF1 {
         return "PolynomialF1{" + s + '}';
     }
 
-    public void show() {
-        for (int i = 0; i < coef[0] + 2; i++) {
+    /**
+     * This method is used to get a string that represents the polynomial.
+     *
+     * @return the string that represents the polynomial.
+     */
+    public String show() {
+        String string = "";
+
+        for (int i = 1; i < coef[0] + 2; i++) {
+            if (coef[i] != 0) {
+                string += coef[i] > 0 && i > 1 ? " + " : "";
+                string += coef[i] + "x^" + (int) (coef[0] + 1 - i);
+            }
+        }
+
+        return string;
+    }
+
+    /**
+     * This method is used to enter the coefficients of the polynomial.
+     */
+    public void enterTerms() {
+        float a;
+        int exponent;
+        String answer = "";
+        answer = JOptionPane.showInputDialog("Do you want to enter term? Y/N");
+        while (answer.equalsIgnoreCase("s")) {
+            a = Float.parseFloat(JOptionPane.showInputDialog("Enter the coefficient:"));
+            exponent = Integer.parseInt(JOptionPane.showInputDialog("Enter the exponent:"));
+            this.storeTerm(a, exponent);
+            answer = JOptionPane.showInputDialog("Do you want to enter term? Y/N");
+
+            if (!answer.equalsIgnoreCase("y") && this.coef[1] == 0) {
+                JOptionPane.showMessageDialog(null, "You must enter term with the degree of the polynomial.");
+                answer = "y";
+            } 
         }
     }
 
-    public void storeTerm(float a, int degree) {
-        int i;
-        if (degree >= 0 && degree <= coef[0]) {
-            i = (int) coef[0] + 1 - degree;
+    /**
+     * This method is used to store terms in the polynomial.
+     *
+     * @param a the coefficient to be stored.
+     * @param exponent the exponent to be stored.
+     */
+    public void storeTerm(float a, int exponent) {
+        if (exponent >= 0 && exponent <= coef[0]) {
+            int i = (int) coef[0] + 1 - exponent;
+
             if (coef[i] == 0) {
                 coef[i] = a;
             } else {
-                // throw
+                System.out.println("A data already exists in that position.");
             }
         } else {
-            // throw
+            System.out.println("The exponent \'" + exponent
+                    + "\' does not correspond to the degree of the polynomial \'" + degree + "\'");
         }
     }
 
+    /**
+     * This method is used to adjust the polynomial.
+     */
     public void adjust() {
-        int j = 1, count = 0;
-        while (j < coef[0] + 2 && coef[j] == 0) {
+        int i = 1, count = 0;
+
+        while (i < coef[0] + 2 && coef[i] == 0) {
             count += 1;
+            i += 1;
         }
-        for (int k = 0; k < coef[0] + 2; k++) {
-            coef[k - count] = coef[k];
+
+        for (int j = i; j < coef[0] + 2; j++) {
+            coef[j - count] = coef[j];
         }
+
         coef[0] -= count;
     }
 
-    public void resize(int degree) {
-        int i = degree + 1;
-        float aux[] = new float[degree + 2];
+    /**
+     * This method is used to changes the size of the {@code coef} array.
+     *
+     * @param exponent the exponent.
+     */
+    public void resize(int exponent) {
+        int i = exponent + 1;
+        this.degree += 2;
+        float aux[] = new float[this.degree];
+
         for (int j = (int) coef[0] + 1; j > 0; j--) {
             aux[i] = coef[j];
             i -= 1;
         }
+
         coef = aux;
     }
 
-    public void insertTerm(float a, int degree) {
-        int i;
-        if (degree < 0) {
-            // throw
+    /**
+     * This method is used to insert terms in the polynomial. A different from
+     * the method for store terms, add the coefficients of the terms with equal
+     * degree.
+     *
+     * @param a the coefficient to be inserted.
+     * @param exponent the exponent to be inserted.
+     */
+    public void insertTerm(float a, int exponent) {
+        if (exponent < 0) {
+            System.out.println("The exponent isn't valid.");
+        } else if (exponent <= coef[0]) {
+            int i = (int) coef[0] + 1 - exponent;
+            coef[i] = coef[i] + a;
+            this.adjust();
         } else {
-            if (degree <= coef[0]) {
-                i = (int) coef[0] + 1 - degree;
-                coef[i] = coef[i] + a;
-                this.adjust();
-            } else {
-                this.resize(degree);
-                coef[0] = degree;
-                coef[1] = a;
-            }
+            this.resize(exponent);
+            coef[0] = exponent;
+            coef[1] = a;
         }
     }
 
@@ -170,23 +233,33 @@ public class PolynomialF1 {
      * @param x the point at which to evaluate the polynomial
      * @return the integer whose value is {@code (this(x))}
      */
-    public float evaluate(int x) {
+    public float evaluate(float x) {
         float result = 0;
+
         for (int i = 1; i < coef[0] + 2; i++) {
             result += coef[i] * (float) (Math.pow(x, (coef[0] + 1 - i)));
         }
+
         return result;
     }
 
+    /**
+     * This method is used to return maximum of two floats.
+     *
+     * @param m the first number.
+     * @param n the second number.
+     * @return maximum between {@code m} and {@code n}.
+     */
     static int max(float m, float n) {
         return (int) ((m > n) ? m : n);
     }
 
     /**
-     * Returns the sum of this polynomial and the specified polynomial.
+     * This method is used to add two polynomials. It means that it adds the
+     * coefficients of the terms with the same degree.
      *
-     * @param B the other polynomial
-     * @return the polynomial whose value is {@code (this(x) + that(x))}
+     * @param B the other polynomial.
+     * @return the polynomial whose value is {@code (this(x) + that(x))}.
      */
     public PolynomialF1 add(PolynomialF1 B) {
         int i = 1, j = 1, exponentA, exponentB;
@@ -198,66 +271,148 @@ public class PolynomialF1 {
             exponentB = (int) B.getCoef(0) + 1 - j;
 
             if (exponentA > exponentB) {
-                R.insertTerm(B.getCoef(j), exponentA);
+                R.insertTerm(B.getCoef(i), exponentA);
+                i += 1;
             } else if (exponentB > exponentA) {
                 R.setCoef(B.getCoef(j), (int) (B.getCoef(0) + 1 - exponentB));
-                i += 1;
+                j += 1;
             } else {
-                R.setCoef((coef[j] + B.getCoef(j)), (int) (B.getCoef(0) + 1 - exponentA));
+                R.setCoef((coef[i] + B.getCoef(j)), (int) (B.getCoef(0) + 1 - exponentA));
                 i += 1;
                 j += 1;
             }
         }
         R.adjust();
+
         return R;
     }
 
     /**
-     * Returns the product of this polynomial and the specified polynomial.
-     * Takes time proportional to the product of the degrees.
+     * This method is used to multiply two polynomial. Takes time proportional
+     * to the product of the degrees.
      *
-     * @param B the other polynomial
-     * @return the polynomial whose value is {@code (this(x) * that(x))}
+     * @param B the other polynomial.
+     * @return the polynomial whose value is {@code (this(x) * that(x))}.
      */
     public PolynomialF1 multiply(PolynomialF1 B) {
         PolynomialF1 R = new PolynomialF1((int) (coef[0] + B.getCoef(0)));
 
-        for (int i = 0; i < B.getCoef(0) + 2; i++) {
-            for (int j = 0; j < coef[0] + 2; j++) {
-                float a = coef[j] * B.getCoef(i);
-                int n = ((int) (B.getCoef(0) + 1 - i)) + ((int) (coef[0] + 1 - j));
-                R.insertTerm(a, n);
+        for (int i = 1; i < B.getCoef(0) + 2; i++) {
+            for (int j = 1; j < coef[0] + 2; j++) {
+                int exponentR = (int) ((coef[0] + 1 - j) + (B.getCoef(0) + 1 - i));
+                float coefficientR = coef[j] * B.getCoef(i);
+                R.insertTerm(coefficientR, exponentR);
             }
         }
+
         return R;
     }
 
+    /**
+     * This method is used to copy one polynomial.
+     *
+     * @return the duplicate of the polynomial.
+     */
     public PolynomialF1 copy() {
-        PolynomialF1 duplicate = new PolynomialF1(degree);
+        PolynomialF1 duplicate = new PolynomialF1(this.degree);
 
         for (int i = 1; i < coef[0] + 2; i++) {
             duplicate.setCoef(coef[i], i);
         }
+
         return duplicate;
     }
 
+    /**
+     * This method is used to divide two polynomial.
+     *
+     * @param B the other polynomial.
+     * @return the polynomial whose value is {@code (this(x) / that(x))}.
+     */
     public PolynomialF1 divide(PolynomialF1 B) {
-        int exponent;
-        float coefficient;
+        int exponentR, exponentA, exponentB;
+        float coefficientR, coefficientA;
         PolynomialF1 R = new PolynomialF1((int) (coef[0] - B.getCoef(0)));
 
         while (coef[0] >= B.getCoef(0)) {
-            exponent = (int) (coef[0] - B.getCoef(0));
-            coefficient = coef[1] / B.getCoef(1);
+            exponentR = (int) (coef[0] - B.getCoef(0));
+            coefficientR = coef[1] / B.getCoef(1);
 
-            R.insertTerm(coefficient, exponent);
+            R.insertTerm(coefficientR, exponentR);
 
-            for (int i = 0; i < B.getCoef(0) + 2; i++) {
-                this.insertTerm(-(coefficient * B.getCoef(i)), (exponent + ((int) B.getCoef(0) + 1 - i)));
+            for (int i = 1; i < B.getCoef(0) + 2; i++) {
+                exponentB = (int) B.getCoef(0) + 1 - i;
+                exponentA = exponentR + exponentB;
+                coefficientA = coefficientR * B.getCoef(i);
+                this.insertTerm(-coefficientA, exponentA);
             }
             this.adjust();
         }
+
         return R;
     }
 
+    /**
+     * This method is used to add a polynomial vector form 1 with polynomial
+     * vector form 2 and return a linked list polynomial.
+     *
+     * @param B the other polynomial.
+     * @return the polynomial whose value is {@code (this(x) + that(x))}.
+     */
+    public PolynomialLinkedList addPolynomialF1WithPolynomialF2(PolynomialF2 B) {
+        int i = 1, j = 1, exponentA, exponentB;
+        PolynomialLinkedList R = new PolynomialLinkedList();
+
+        while (i < coef[0] + 1 && j < B.getData(0) * 2 + 1) {
+            exponentA = (int) coef[0] + 1 - i;
+            exponentB = (int) B.getData(1);
+
+            if (exponentA > exponentB) {
+                R.insertTerm(coef[i], exponentA);
+                i += 1;
+            } else if (exponentB > exponentA) {
+                R.insertTerm(B.getData(j + 1), (int) B.getData(j));
+                j += 1;
+            } else {
+                R.insertTerm(coef[i] + B.getData(j + 1), (int) B.getData(j));
+                i += 1;
+                j += 1;
+            }
+        }
+
+        while (i < coef[0] + 2) {
+            R.insertTerm(coef[i], (int) coef[0] + 1 - i);
+            i += 1;
+        }
+
+        return R;
+    }
+
+    /**
+     * This method is used to compares this polynomial to the specified
+     * polynomial of the class PolynomialF2.
+     *
+     * @param B the other polynomial
+     * @return {@code true} if this polynomial equals {@code B}; {@code false}
+     * otherwise
+     */
+    public boolean comparisonPolynomialF1WithPolynomialF2(PolynomialF2 B) {
+        int i = 1, j = 1, exponentA, exponentB;
+
+        while (i < coef[0] + 1 && j < B.getData(0) * 2 + 1) {
+            exponentA = (int) coef[0] + 1 - i;
+            exponentB = (int) B.getData(j);
+
+            if (exponentA != exponentB) {
+                return false;
+            }
+            if (coef[i] != B.getData(j + 1)) {
+                return false;
+            }
+            i += 1;
+            j += 2;
+        }
+
+        return true;
+    }
 }

@@ -1,21 +1,23 @@
 /** ****************************************************************************
- *  Compilation:  javac Polynomial.java
- *  Execution:    java Polynomial
+ *  Compilation:  javac PolynomialF2.java
+ *  Execution:    java PolynomialF2
  *
  *  Polynomials Vector Form 2.
  *
  *  % java PolynomialF2
- *  zero(x)     = 0
  *  p(x)        = 4x^3 + 3x^2 + 2x + 1
  *  q(x)        = 3x^2 + 5
  *  p(x) + q(x) = 4x^3 + 6x^2 + 2x + 6
  *  p(x) * q(x) = 12x^5 + 9x^4 + 26x^3 + 18x^2 + 10x + 5
+ *  p(x) / q(x)
  *
  ***************************************************************************** */
 package polynomialprogram;
 
+import javax.swing.JOptionPane;
+
 /**
- * The {@code PolynomialF1} class represents a polynomial vector form 2.
+ * The {@code PolynomialF2} class represents a polynomial vector form 2.
  * Polynomials are immutable: their values cannot be changed after they are
  * created. It includes methods for addition, subtraction, multiplication,
  * comparison and evaluation.
@@ -30,16 +32,16 @@ public class PolynomialF2 {
     /**
      * Initializes a new polynomial x^b
      *
-     * @param n number of terms of the polynomial
-     * @throws IllegalArgumentException if {@code n} is negative
+     * @param n number of terms of the polynomial.
+     * @throws IllegalArgumentException if {@code n} is negative.
      */
     public PolynomialF2(int n) {
         if (n < 0) {
             throw new IllegalArgumentException("number of terms cannot be negative: " + n);
         }
-        size = n * 2 + 1;
-        polynomial = new float[size];
-        polynomial[0] = n;
+        this.size = n * 2 + 1;
+        this.polynomial = new float[this.size];
+        this.polynomial[0] = n;
     }
 
     /**
@@ -49,6 +51,15 @@ public class PolynomialF2 {
      */
     public int getSize() {
         return size;
+    }
+
+    /**
+     * Sets the size of this polynomial.
+     *
+     * @param n the size of this polynomial
+     */
+    public void setSize(int n) {
+        this.size = n;
     }
 
     /**
@@ -68,18 +79,47 @@ public class PolynomialF2 {
      * @param i the position
      */
     public void setData(float data, int i) {
-        polynomial[i] = data;
+        this.polynomial[i] = data;
     }
 
+    /**
+     * This method is used to get a string that represents the polynomial.
+     *
+     * @return the string that represents the polynomial.
+     */
     public String show() {
         String string = "";
-        for (int i = 0; i < polynomial[0] * 2 + 1; i += 2) {
+
+        for (int i = 1; i < polynomial[0] * 2 + 1; i += 2) {
             string += polynomial[i + 1] > 0 && i > 1 ? " + " : "";
-            string += polynomial[i + 1] + "X^" + (int) polynomial[i];
+            string += polynomial[i + 1] + "x^" + polynomial[i];
         }
+
         return string;
     }
 
+    /**
+     * This method is used to enter the coefficients and exponents of the polynomial.
+     */
+    public void enterTerms(int canterm) {
+        float a;
+        int exponent;
+        boolean flag = true;
+        for (int i = 1; i <= canterm; i++) {
+            a = Float.parseFloat(JOptionPane.showInputDialog("Enter the coefficient:"));
+            exponent = Integer.parseInt(JOptionPane.showInputDialog("Enter the exponent:"));
+            flag = this.storeTerm(a, exponent);
+            i = flag == false ? i - 1 : i;
+        }
+    }
+
+    /**
+     * This method is used to store terms in the polynomial.
+     *
+     * @param coefficient the coefficient to be stored.
+     * @param exponent the exponent to be stored.
+     * @return a boolean that confirms of the term does not exists.
+     */
     public boolean storeTerm(float coefficient, int exponent) {
         int i = 1;
         boolean isExist = true;
@@ -89,7 +129,7 @@ public class PolynomialF2 {
         }
 
         if (i < polynomial[0] * 2 + 1 && polynomial[i] == exponent && polynomial[i + 1] != 0) {
-            // throw
+            System.out.println("A term with exponent already exists.");
             isExist = false;
         } else {
             for (int j = (int) polynomial[0] * 2 - 1; j > i; j--) {
@@ -98,18 +138,38 @@ public class PolynomialF2 {
             polynomial[i] = exponent;
             polynomial[i + 1] = coefficient;
         }
+
         return isExist;
     }
 
-    public void resize() {
-        size += 2;
-        float aux[] = new float[size];
-        for (int i = 0; i < (int) polynomial[0] * 2 + 1; i++) {
+    /**
+     * This method is used to increases or decreases the size of the
+     * {@code polynomial} array by {@code n} positions.
+     *
+     * @param n number of positions.
+     */
+    public void resize(int n) {
+        this.size += n;
+        float aux[] = new float[this.size];
+        int lenght = n < 0 && this.size >= polynomial[0] * 2 + 1 ? this.size : (int) polynomial[0] * 2 + 1;
+
+        // Manual array copy.
+        for (int i = 0; i < lenght; i++) {
             aux[i] = polynomial[i];
         }
+        // Alternative array copy.
+        // System.arraycopy(polynomial, 0, aux, 0, (int) polynomial[0] * 2 + 1);
         polynomial = aux;
     }
 
+    /**
+     * This method is used to insert terms in the polynomial. A different from
+     * the method for store terms, add the coefficients of the terms with equal
+     * degree.
+     *
+     * @param coefficient the coefficient to be inserted.
+     * @param exponent the exponent to be inserted.
+     */
     public void insertTerm(float coefficient, int exponent) {
         if (coefficient != 0) {
             int i = 1, j;
@@ -119,18 +179,20 @@ public class PolynomialF2 {
             }
 
             if (i < polynomial[0] * 2 + 1 && polynomial[i] == exponent && polynomial[i + 1] != 0) {
-                if ((polynomial[i + 1] + coefficient) != 0) {
-                    polynomial[i + 1] = polynomial[i + 1] + coefficient;
+                float sum = polynomial[i + 1] + coefficient;
+                if (sum != 0) {
+                    polynomial[i + 1] = sum;
                 } else {
-                    for (j = i; j < (polynomial[0] * 2 - 1); j++) {
+                    for (j = i; j < (polynomial[0] * 2 - 1); j += 2) {
                         polynomial[j] = polynomial[j + 2];
                         polynomial[j + 1] = polynomial[j + 3];
                     }
                     polynomial[0] -= 1;
+                    this.resize(-2);
                 }
             } else {
-                if (polynomial[0] * 2 + 1 == size) {
-                    resize();
+                if (polynomial[0] * 2 + 1 == this.size) {
+                    this.resize(2);
                 }
 
                 for (j = (int) polynomial[0] * 2 + 1; j >= i; j--) {
@@ -144,12 +206,41 @@ public class PolynomialF2 {
     }
 
     /**
-     * Returns the result of evaluating this polynomial at the point x.
+     * This method is used to remove terms in the polynomial.
      *
-     * @param x the point at which to evaluate the polynomial
-     * @return the integer whose value is {@code (this(x))}
+     * @param exponent the exponent to be removed.
+     * @return confirmation if term was found and removed.
      */
-    public float evaluate(int x) {
+    public boolean removeTerm(int exponent) {
+        int i = 1, j;
+        boolean isFound = false;
+
+        while (i < polynomial[0] * 2 + 1 && polynomial[i] > exponent && polynomial[i + 1] != 0) {
+            i += 2;
+        }
+
+        if (i < polynomial[0] * 2 + 1 && polynomial[i] == exponent && polynomial[i + 1] != 0) {
+            isFound = true;
+
+            // TODO: test remove element from array and reposition terms.
+            for (j = i; j < (polynomial[0] * 2 - 1); j += 2) {
+                polynomial[j] = polynomial[j + 2];
+                polynomial[j + 1] = polynomial[j + 3];
+            }
+            polynomial[0] -= 1;
+        }
+
+        return isFound;
+    }
+
+    /**
+     * This method is used to evaluate this polynomial at the point x.
+     *
+     * @param x the point at which to evaluate the polynomial.
+     * @return the result of evaluating the integer whose value is
+     * {@code (this(x))}.
+     */
+    public float evaluate(float x) {
         float result = 0;
         for (int i = 1; i < polynomial[0] * 2 + 1; i += 2) {
             result += polynomial[i + 1] * (float) (Math.pow(x, polynomial[i]));
@@ -157,15 +248,12 @@ public class PolynomialF2 {
         return result;
     }
 
-    static int max(float m, float n) {
-        return (int) ((m > n) ? m : n);
-    }
-
     /**
-     * Returns the sum of this polynomial and the specified polynomial.
+     * This method is used to add two polynomials. It means that it adds the
+     * coefficients of the terms with the same degree.
      *
-     * @param B the other polynomial
-     * @return the polynomial whose value is {@code (this(x) + that(x))}
+     * @param B the other polynomial.
+     * @return the polynomial whose value is {@code (this(x) + that(x))}.
      */
     public PolynomialF2 add(PolynomialF2 B) {
         int i = 1, j = 1, exponentA, exponentB;
@@ -208,11 +296,11 @@ public class PolynomialF2 {
     }
 
     /**
-     * Returns the product of this polynomial and the specified polynomial.
-     * Takes time proportional to the product of the degrees.
+     * This method is used to multiply two polynomial. Takes time proportional
+     * to the product of the degrees.
      *
-     * @param B the other polynomial
-     * @return the polynomial whose value is {@code (this(x) * that(x))}
+     * @param B the other polynomial.
+     * @return the polynomial whose value is {@code (this(x) * that(x))}.
      */
     public PolynomialF2 multiply(PolynomialF2 B) {
         PolynomialF2 R = new PolynomialF2(0);
@@ -222,34 +310,79 @@ public class PolynomialF2 {
                 R.insertTerm(polynomial[j + 1] * B.getData(i + 1), (int) (polynomial[j] + B.getData(i)));
             }
         }
+
         return R;
     }
 
+    /**
+     * This method is used to copy one polynomial.
+     *
+     * @return the duplicate of the polynomial.
+     */
     public PolynomialF2 copy() {
         PolynomialF2 duplicate = new PolynomialF2((int) polynomial[0]);
 
         for (int i = 1; i < polynomial[0] * 2 + 1; i++) {
             duplicate.setData(polynomial[i], i);
         }
+
         return duplicate;
     }
 
+    /**
+     * This method is used to divide two polynomial.
+     *
+     * @param B the other polynomial.
+     * @return the polynomial whose value is {@code (this(x) / that(x))}.
+     */
     public PolynomialF2 divide(PolynomialF2 B) {
-        int exponent;
-        float coefficient;
+        int exponentR, exponentA;
+        float coefficientR, coefficientA;
         PolynomialF2 R = new PolynomialF2(0);
 
         while (polynomial[1] >= B.getData(1)) {
-            exponent = (int) (polynomial[1] - B.getData(1));
-            coefficient = polynomial[2] / B.getData(2);
+            exponentR = (int) (polynomial[1] - B.getData(1));
+            coefficientR = polynomial[2] / B.getData(2);
 
-            R.insertTerm(coefficient, exponent);
+            R.insertTerm(coefficientR, exponentR);
 
-            for (int i = 0; i < B.getData(0) * 2 + 1; i += 2) {
-                this.insertTerm(-(coefficient * B.getData(i + 1)), (exponent + (int) B.getData(i)));
+            for (int i = 1; i < B.getData(0) * 2 + 1; i += 2) {
+                exponentA = exponentR + (int) B.getData(i);
+                coefficientA = coefficientR * B.getData(i + 1);
+                this.insertTerm(-coefficientA, exponentA);
             }
         }
+
         return R;
     }
 
+    /**
+     * This method is used to divide a polynomial vector form 2 with polynomial
+     * linked list and returns a polynomial vector form 1.
+     *
+     * @param B the other polynomial.
+     * @return the polynomial whose value is {@code (this(x) / that(x))}
+     */
+    public PolynomialF1 dividePolynomialF2WithPolynomialLinkedList(PolynomialLinkedList B) {
+        Node startB = B.getHead();
+        int exponentR, exponentA;
+        float coefficientR, coefficientA;
+        PolynomialF1 R = new PolynomialF1((int) polynomial[1] - startB.getExponent());
+
+        while (polynomial[1] >= startB.getExponent()) {
+            exponentR = (int) polynomial[1] - startB.getExponent();
+            coefficientR = polynomial[2] / startB.getCoefficient();
+
+            while (startB != null) {
+                exponentA = exponentR + startB.getExponent();
+                coefficientA = coefficientR * startB.getCoefficient();
+
+                R.insertTerm(-coefficientA, exponentA);
+
+                startB.getNext();
+            }
+        }
+
+        return R;
+    }
 }
