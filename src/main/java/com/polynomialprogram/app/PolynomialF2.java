@@ -1,33 +1,28 @@
-/** ****************************************************************************
- *  Compilation:  javac PolynomialF2.java
- *  Execution:    java PolynomialF2
+/**
+ * **************************************************************************** Compilation: javac
+ * PolynomialF2.java Execution: java PolynomialF2
  *
- *  Polynomials Vector Form 2.
+ * Polynomials Vector Form 2.
  *
- *  % java PolynomialF2
- *  p(x)        = 4x^3 + 3x^2 + 2x + 1
- *  q(x)        = 3x^2 + 5
- *  p(x) + q(x) = 4x^3 + 6x^2 + 2x + 6
- *  p(x) * q(x) = 12x^5 + 9x^4 + 26x^3 + 18x^2 + 10x + 5
- *  p(x) / q(x)
+ * % java PolynomialF2 p(x) = 4x^3 + 3x^2 + 2x + 1 q(x) = 3x^2 + 5 p(x) + q(x) = 4x^3 + 6x^2 + 2x +
+ * 6 p(x) * q(x) = 12x^5 + 9x^4 + 26x^3 + 18x^2 + 10x + 5 p(x) / q(x)
  *
- ***************************************************************************** */
+ */
 package com.polynomialprogram.app;
 
 import java.util.Random;
 import javax.swing.JOptionPane;
 
 /**
- * The {@code PolynomialF2} class represents a polynomial vector form 2.
- * Polynomials are immutable: their values cannot be changed after they are
- * created. It includes methods for addition, subtraction, multiplication,
- * comparison and evaluation.
+ * The {@code PolynomialF2} class represents a polynomial vector form 2. Polynomials are immutable:
+ * their values cannot be changed after they are created. It includes methods for addition,
+ * subtraction, multiplication, comparison and evaluation.
  *
  * @author ev
  */
 public class PolynomialF2 {
 
-    private int size;           // size of polynomial
+    private int size; // size of polynomial
     private float[] polynomial; // polynomial p(x) = sum { coef[i + 1] * x^coef[i] }
 
     /**
@@ -86,8 +81,7 @@ public class PolynomialF2 {
     /**
      * This method is used to generate polynomial vector form 2 random.
      */
-    public void generatePolynomialF1Random() {
-    }
+    public void generatePolynomialF1Random() {}
 
     /**
      * This method is used to get a string that represents the polynomial.
@@ -135,8 +129,7 @@ public class PolynomialF2 {
     }
 
     /**
-     * This method is used to enter the coefficients and exponents of the
-     * polynomial.
+     * This method is used to enter the coefficients and exponents of the polynomial.
      *
      * @param n number of terms of the polynomial.
      */
@@ -154,15 +147,16 @@ public class PolynomialF2 {
     }
 
     /**
-     * This method is used to increases or decreases the size of the
-     * {@code polynomial} array by {@code n} positions.
+     * This method is used to increases or decreases the size of the {@code polynomial} array by
+     * {@code n} positions.
      *
      * @param n number of positions.
      */
     public void resize(int n) {
         this.size += n;
         float aux[] = new float[this.size];
-        int lenght = n < 0 && this.size >= polynomial[0] * 2 + 1 ? this.size : (int) polynomial[0] * 2 + 1;
+        int lenght = n < 0 && this.size >= polynomial[0] * 2 + 1 ? this.size
+                : (int) polynomial[0] * 2 + 1;
 
         // Manual array copy.
         for (int i = 0; i < lenght; i++) {
@@ -174,9 +168,8 @@ public class PolynomialF2 {
     }
 
     /**
-     * This method is used to insert terms in the polynomial. A different from
-     * the method for store terms, add the coefficients of the terms with equal
-     * degree.
+     * This method is used to insert terms in the polynomial. A different from the method for store
+     * terms, add the coefficients of the terms with equal degree.
      *
      * @param coefficient the coefficient to be inserted.
      * @param exponent the exponent to be inserted.
@@ -185,7 +178,8 @@ public class PolynomialF2 {
         if (coefficient != 0) {
             int i = 1, j;
 
-            while (i < polynomial[0] * 2 + 1 && polynomial[i] > exponent && polynomial[i + 1] != 0) {
+            while (i < polynomial[0] * 2 + 1 && polynomial[i] > exponent
+                    && polynomial[i + 1] != 0) {
                 i += 2;
             }
 
@@ -249,8 +243,7 @@ public class PolynomialF2 {
      * This method is used to evaluate this polynomial at the point x.
      *
      * @param x the point at which to evaluate the polynomial.
-     * @return the result of evaluating the integer whose value is
-     * {@code (this(x))}.
+     * @return the result of evaluating the integer whose value is {@code (this(x))}.
      */
     public float evaluate(float x) {
         float result = 0;
@@ -263,8 +256,8 @@ public class PolynomialF2 {
     }
 
     /**
-     * This method is used to add two polynomials. It means that it adds the
-     * coefficients of the terms with the same degree.
+     * This method is used to add two polynomials. It means that it adds the coefficients of the
+     * terms with the same degree.
      *
      * @param B the other polynomial.
      * @return the polynomial whose value is {@code (this(x) + that(x))}.
@@ -312,8 +305,8 @@ public class PolynomialF2 {
     }
 
     /**
-     * This method is used to multiply two polynomial. Takes time proportional
-     * to the product of the degrees.
+     * This method is used to multiply two polynomial. Takes time proportional to the product of the
+     * degrees.
      *
      * @param B the other polynomial.
      * @return the polynomial whose value is {@code (this(x) * that(x))}.
@@ -323,7 +316,8 @@ public class PolynomialF2 {
 
         for (int i = 1; i < B.getData(0) * 2 + 1; i += 2) {
             for (int j = 1; j < (int) polynomial[0] * 2 + 1; j += 2) {
-                R.insertTerm(polynomial[j + 1] * B.getData(i + 1), (int) (polynomial[j] + B.getData(i)));
+                R.insertTerm(polynomial[j + 1] * B.getData(i + 1),
+                        (int) (polynomial[j] + B.getData(i)));
             }
         }
 
@@ -374,8 +368,8 @@ public class PolynomialF2 {
     }
 
     /**
-     * This method is used to divide a polynomial vector form 2 with polynomial
-     * linked list and returns a polynomial vector form 1.
+     * This method is used to divide a polynomial vector form 2 with polynomial linked list and
+     * returns a polynomial vector form 1.
      *
      * @param B the other polynomial.
      * @return the polynomial whose value is {@code (this(x) / that(x))}
