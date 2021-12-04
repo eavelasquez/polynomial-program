@@ -62,7 +62,7 @@ public class PolynomialLinkedList {
         } else {
             while (start != null) {
                 string += start.getCoefficient() > 0 && start != this.head ? " + " : "";
-                string += start.getCoefficient() + "x^" + start.getExponent();
+                string += start.getCoefficient() + "x^" + (int) start.getExponent();
                 start = start.getNext();
             }
         }
@@ -145,7 +145,7 @@ public class PolynomialLinkedList {
                 newNode = new Node(coefficient, exponent);
                 newNode.setNext(start);
 
-                if (start != this.head) {
+                if (start == this.head) {
                     this.head = newNode;
                 } else {
                     previous.setNext(newNode);
@@ -183,8 +183,8 @@ public class PolynomialLinkedList {
     }
 
     /**
-     * This method is used to remove the first term with coefficient negative in
-     * the linked list of the polynomial.
+     * This method is used to remove the first term with coefficient negative in the linked list of
+     * the polynomial.
      *
      * @return confirmation if term was found and removed.
      */

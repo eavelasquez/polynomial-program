@@ -39,9 +39,9 @@ public class PolynomialF1 {
         if (n < 0) {
             throw new IllegalArgumentException("degree cannot be negative: " + n);
         }
-        this.degree = n;
-        this.coef = new float[this.degree + 2];
-        this.coef[0] = this.degree;
+        this.degree = n + 2;
+        this.coef = new float[this.degree];
+        this.coef[0] = n;
     }
 
     /**
@@ -287,10 +287,10 @@ public class PolynomialF1 {
                 R.insertTerm(coef[i], exponentA);
                 i += 1;
             } else if (exponentB > exponentA) {
-                R.setCoef(B.getCoef(j), (int) (B.getCoef(0) + 1 - exponentB));
+                R.setCoef(B.getCoef(j), (int) (R.getCoef(0) + 1 - exponentB));
                 j += 1;
             } else {
-                R.setCoef((coef[i] + B.getCoef(j)), (int) (B.getCoef(0) + 1 - exponentA));
+                R.setCoef((coef[i] + B.getCoef(j)), (int) (R.getCoef(0) + 1 - exponentA));
                 i += 1;
                 j += 1;
             }
@@ -314,6 +314,7 @@ public class PolynomialF1 {
             for (int j = 1; j < coef[0] + 2; j++) {
                 int exponentR = (int) ((B.getCoef(0) + 1 - i) + (coef[0] + 1 - j));
                 float coefficientR = coef[j] * B.getCoef(i);
+
                 R.insertTerm(coefficientR, exponentR);
             }
         }
@@ -395,7 +396,7 @@ public class PolynomialF1 {
         }
 
         while (i < coef[0] + 2) {
-            R.insertTerm(coef[i], (int) coef[0] + 1 - i);
+            R.insertTerm(coef[i], (int) (coef[0] + 1 - i));
             i += 1;
         }
 

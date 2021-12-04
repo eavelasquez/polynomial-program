@@ -10,7 +10,6 @@
  */
 package com.polynomialprogram.app;
 
-import java.util.Random;
 import javax.swing.JOptionPane;
 
 /**
@@ -93,7 +92,7 @@ public class PolynomialF2 {
 
         for (int i = 1; i < polynomial[0] * 2 + 1; i += 2) {
             string += polynomial[i + 1] > 0 && i > 1 ? " + " : "";
-            string += polynomial[i + 1] + "x^" + polynomial[i];
+            string += polynomial[i + 1] + "x^" + (int) polynomial[i];
         }
 
         return string;
@@ -313,7 +312,7 @@ public class PolynomialF2 {
         PolynomialF2 R = new PolynomialF2(0);
 
         for (int i = 1; i < B.getData(0) * 2 + 1; i += 2) {
-            for (int j = 1; j < (int) polynomial[0] * 2 + 1; j += 2) {
+            for (int j = 1; j < (int) (polynomial[0] * 2 + 1); j += 2) {
                 R.insertTerm(polynomial[j + 1] * B.getData(i + 1),
                         (int) (polynomial[j] + B.getData(i)));
             }
