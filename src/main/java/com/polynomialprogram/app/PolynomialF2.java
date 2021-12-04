@@ -107,8 +107,10 @@ public class PolynomialF2 {
         String string = "";
 
         for (int i = 1; i < polynomial[0] * 2 + 1; i += 2) {
+            int exponent = (int) polynomial[i];
             string += polynomial[i + 1] > 0 && i > 1 ? " + " : "";
-            string += polynomial[i + 1] + "x^" + (int) polynomial[i];
+            string += polynomial[i + 1] + (exponent > 0 ? "x" : "")
+                    + (exponent > 1 ? ("^" + exponent) : "");
         }
 
         return string;
@@ -212,7 +214,7 @@ public class PolynomialF2 {
                 }
             } else {
                 if (polynomial[0] * 2 + 1 == this.size) {
-                    this.resize(3);
+                    this.resize(2);
                 }
                 for (int k = (int) (polynomial[0] * 2 - 1); k >= i; k--) {
                     polynomial[k + 2] = polynomial[k];

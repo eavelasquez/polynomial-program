@@ -32,6 +32,7 @@ public class PolynomialLinkedList {
 
     public PolynomialLinkedList(PolynomialF1 from) {
         this.head = null;
+
         for (int i = 1; i < from.getCoef(0) + 2; i++) {
             if (from.getCoef(i) != 0) {
                 this.storeTerm(from.getCoef(i), (int) (from.getCoef(0) + 1 - i));
@@ -156,10 +157,8 @@ public class PolynomialLinkedList {
 
                 if (start == this.head) {
                     this.head = newNode;
-                } else if (previous != null) {
+                } else {
                     previous.setNext(newNode);
-                } else if (this.head == null) {
-                    this.head = newNode;
                 }
             }
         }
@@ -193,32 +192,6 @@ public class PolynomialLinkedList {
         return isFound;
     }
 
-    public boolean removeNegativeFirs() {
-        Node currentTerm = head, previous = null;
-        boolean isRemoved = false;
-
-        if (currentTerm == null) {
-            return false;
-        }
-
-        while (currentTerm.getCoefficient() >= 0) {
-            previous = currentTerm;
-            currentTerm = currentTerm.getNext();
-        }
-
-        if (currentTerm.getCoefficient() < 0) {
-            isRemoved = true;
-
-            if (currentTerm == this.head) {
-                this.head = currentTerm.getNext();
-            } else {
-                previous.setNext(currentTerm.getNext());
-            }
-        }
-
-        return isRemoved;
-    }
-
     /**
      * This method is used to remove the first term with coefficient negative in the linked list of
      * the polynomial.
@@ -227,7 +200,7 @@ public class PolynomialLinkedList {
      */
     public boolean removeFirstTermWithCoefficientNegative() {
         Node start = this.head, previous = null;
-        boolean isFound = false;
+        boolean isRemoved = false;
 
         while (start != null && start.getCoefficient() >= 0) {
             previous = start;
@@ -235,7 +208,7 @@ public class PolynomialLinkedList {
         }
 
         if (start != null && start.getCoefficient() < 0) {
-            isFound = true;
+            isRemoved = true;
 
             if (start == this.head) {
                 this.head = start.getNext();
@@ -244,7 +217,7 @@ public class PolynomialLinkedList {
             }
         }
 
-        return isFound;
+        return isRemoved;
     }
 
     /**
