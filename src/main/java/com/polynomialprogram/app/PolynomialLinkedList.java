@@ -32,7 +32,6 @@ public class PolynomialLinkedList {
 
     public PolynomialLinkedList(PolynomialF1 from) {
         this.head = null;
-
         for (int i = 1; i < from.getCoef(0) + 2; i++) {
             if (from.getCoef(i) != 0) {
                 this.storeTerm(from.getCoef(i), (int) (from.getCoef(0) + 1 - i));
@@ -157,8 +156,10 @@ public class PolynomialLinkedList {
 
                 if (start == this.head) {
                     this.head = newNode;
-                } else {
+                } else if (previous != null) {
                     previous.setNext(newNode);
+                } else if (this.head == null) {
+                    this.head = newNode;
                 }
             }
         }
@@ -190,6 +191,32 @@ public class PolynomialLinkedList {
         }
 
         return isFound;
+    }
+
+    public boolean removeNegativeFirs() {
+        Node currentTerm = head, previous = null;
+        boolean isRemoved = false;
+
+        if (currentTerm == null) {
+            return false;
+        }
+
+        while (currentTerm.getCoefficient() >= 0) {
+            previous = currentTerm;
+            currentTerm = currentTerm.getNext();
+        }
+
+        if (currentTerm.getCoefficient() < 0) {
+            isRemoved = true;
+
+            if (currentTerm == this.head) {
+                this.head = currentTerm.getNext();
+            } else {
+                previous.setNext(currentTerm.getNext());
+            }
+        }
+
+        return isRemoved;
     }
 
     /**
@@ -443,6 +470,7 @@ public class PolynomialLinkedList {
         return true;
     }
 }
+
 
 /**
  * The {@code Node} class represents a node for linked lists.
