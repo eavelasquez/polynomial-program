@@ -1,17 +1,13 @@
-/** ****************************************************************************
- *  Compilation:  javac PolynomialF1.java
- *  Execution:    java PolynomialF1
+/**
+ * **************************************************************************** Compilation: javac
+ * PolynomialF1.java Execution: java PolynomialF1
  *
- *  Polynomials Vector Form 1.
+ * Polynomials Vector Form 1.
  *
- *  % java PolynomialF1
- *  p(x)        = 4x^3 + 3x^2 + 2x + 1
- *  q(x)        = 3x^2 + 5
- *  p(x) + q(x) = 4x^3 + 6x^2 + 2x + 6
- *  p(x) * q(x) = 12x^5 + 9x^4 + 26x^3 + 18x^2 + 10x + 5
- *  p(x) / q(x)
+ * % java PolynomialF1 p(x) = 4x^3 + 3x^2 + 2x + 1 q(x) = 3x^2 + 5 p(x) + q(x) = 4x^3 + 6x^2 + 2x +
+ * 6 p(x) * q(x) = 12x^5 + 9x^4 + 26x^3 + 18x^2 + 10x + 5 p(x) / q(x)
  *
- ***************************************************************************** */
+ */
 package com.polynomialprogram.app;
 
 import java.util.Random;
@@ -22,10 +18,9 @@ import org.beryx.textio.TextIO;
 import org.beryx.textio.TextTerminal;
 
 /**
- * The {@code PolynomialF1} class represents a polynomial vector form 1.
- * Polynomials are immutable: their values cannot be changed after they are
- * created. It includes methods for addition, subtraction, multiplication,
- * comparison and evaluation.
+ * The {@code PolynomialF1} class represents a polynomial vector form 1. Polynomials are immutable:
+ * their values cannot be changed after they are created. It includes methods for addition,
+ * subtraction, multiplication, comparison and evaluation.
  *
  * @author ev
  */
@@ -87,32 +82,32 @@ public class PolynomialF1 {
         coef[i] = a;
     }
 
-//    @Override
-//    public String toString() {
-//        if (degree == -1) {
-//            return "0";
-//        } else if (degree == 0) {
-//            return "" + coef[0];
-//        } else if (degree == 1) {
-//            return coef[1] + "x " + coef[0];
-//        }
-//        String s = coef[degree] + "x^" + degree;
-//        for (int i = degree - 1; i >= 0; i--) {
-//            if (coef[i] == 0) {
-//                continue;
-//            } else if (coef[i] > 0) {
-//                s = s + " + " + (coef[i]);
-//            } else if (coef[i] < 0) {
-//                s = s + " - " + (-coef[i]);
-//            }
-//            if (i == 1) {
-//                s = s + "x";
-//            } else if (i > 1) {
-//                s = s + "x^" + i;
-//            }
-//        }
-//        return "PolynomialF1{" + s + '}';
-//    }
+    // @Override
+    // public String toString() {
+    // if (degree == -1) {
+    // return "0";
+    // } else if (degree == 0) {
+    // return "" + coef[0];
+    // } else if (degree == 1) {
+    // return coef[1] + "x " + coef[0];
+    // }
+    // String s = coef[degree] + "x^" + degree;
+    // for (int i = degree - 1; i >= 0; i--) {
+    // if (coef[i] == 0) {
+    // continue;
+    // } else if (coef[i] > 0) {
+    // s = s + " + " + (coef[i]);
+    // } else if (coef[i] < 0) {
+    // s = s + " - " + (-coef[i]);
+    // }
+    // if (i == 1) {
+    // s = s + "x";
+    // } else if (i > 1) {
+    // s = s + "x^" + i;
+    // }
+    // }
+    // return "PolynomialF1{" + s + '}';
+    // }
     /**
      * This method is used to generate polynomial vector form 1 random.
      */
@@ -121,7 +116,8 @@ public class PolynomialF1 {
 
         for (int i = 1; i < coef[0] + 2; i++) {
             coef[i] = random.nextInt((int) coef[0]);
-            // coef[i] = (int) (random.nextInt((int) coef[0]) * Math.pow(-1, random.nextInt((int) coef[0])));
+            // coef[i] = (int) (random.nextInt((int) coef[0]) * Math.pow(-1, random.nextInt((int)
+            // coef[0])));
         }
     }
 
@@ -169,7 +165,7 @@ public class PolynomialF1 {
     /**
      * This method is used to store terms in the polynomial.
      *
-     * @param a        the coefficient to be stored.
+     * @param a the coefficient to be stored.
      * @param exponent the exponent to be stored.
      */
     public void storeTerm(float a, int exponent) {
@@ -224,11 +220,10 @@ public class PolynomialF1 {
     }
 
     /**
-     * This method is used to insert terms in the polynomial. A different from
-     * the method for store terms, add the coefficients of the terms with equal
-     * degree.
+     * This method is used to insert terms in the polynomial. A different from the method for store
+     * terms, add the coefficients of the terms with equal degree.
      *
-     * @param a        the coefficient to be inserted.
+     * @param a the coefficient to be inserted.
      * @param exponent the exponent to be inserted.
      */
     public void insertTerm(float a, int exponent) {
@@ -273,8 +268,8 @@ public class PolynomialF1 {
     }
 
     /**
-     * This method is used to add two polynomials. It means that it adds the
-     * coefficients of the terms with the same degree.
+     * This method is used to add two polynomials. It means that it adds the coefficients of the
+     * terms with the same degree.
      *
      * @param B the other polynomial.
      * @return the polynomial whose value is {@code (this(x) + that(x))}.
@@ -306,8 +301,8 @@ public class PolynomialF1 {
     }
 
     /**
-     * This method is used to multiply two polynomial. Takes time proportional
-     * to the product of the degrees.
+     * This method is used to multiply two polynomial. Takes time proportional to the product of the
+     * degrees.
      *
      * @param B the other polynomial.
      * @return the polynomial whose value is {@code (this(x) * that(x))}.
@@ -372,8 +367,8 @@ public class PolynomialF1 {
     }
 
     /**
-     * This method is used to add a polynomial vector form 1 with polynomial
-     * vector form 2 and return a linked list polynomial.
+     * This method is used to add a polynomial vector form 1 with polynomial vector form 2 and
+     * return a linked list polynomial.
      *
      * @param B the other polynomial.
      * @return the polynomial whose value is {@code (this(x) + that(x))}.
@@ -408,12 +403,11 @@ public class PolynomialF1 {
     }
 
     /**
-     * This method is used to compares this polynomial to the specified
-     * polynomial of the class PolynomialF2.
+     * This method is used to compares this polynomial to the specified polynomial of the class
+     * PolynomialF2.
      *
      * @param B the other polynomial
-     * @return {@code true} if this polynomial equals {@code B}; {@code false}
-     *         otherwise
+     * @return {@code true} if this polynomial equals {@code B}; {@code false} otherwise
      */
     public boolean comparisonPolynomialF1WithPolynomialF2(PolynomialF2 B) {
         int i = 1, j = 1, exponentA, exponentB;

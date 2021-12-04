@@ -1,25 +1,21 @@
-/** ****************************************************************************
- *  Compilation:  javac PolynomialLinkedList.java
- *  Execution:    java PolynomialLinkedList
+/**
+ * **************************************************************************** Compilation: javac
+ * PolynomialLinkedList.java Execution: java PolynomialLinkedList
  *
- *  Polynomials represented by a Linked List.
+ * Polynomials represented by a Linked List.
  *
- *  % java PolynomialLinkedList
- *  p(x)        = 4x^3 + 3x^2 + 2x + 1
- *  q(x)        = 3x^2 + 5
- *  p(x) + q(x) = 4x^3 + 6x^2 + 2x + 6
- *  p(x) * q(x) = 12x^5 + 9x^4 + 26x^3 + 18x^2 + 10x + 5
+ * % java PolynomialLinkedList p(x) = 4x^3 + 3x^2 + 2x + 1 q(x) = 3x^2 + 5 p(x) + q(x) = 4x^3 + 6x^2
+ * + 2x + 6 p(x) * q(x) = 12x^5 + 9x^4 + 26x^3 + 18x^2 + 10x + 5
  *
- ***************************************************************************** */
+ */
 package com.polynomialprogram.app;
 
 import javax.swing.JOptionPane;
 
 /**
- * The {@code PolynomialLinkedList} class represents a polynomial represented by
- * a linked list. Polynomials are immutable: their values cannot be changed
- * after they are created. It includes methods for addition, subtraction,
- * multiplication, comparison and evaluation.
+ * The {@code PolynomialLinkedList} class represents a polynomial represented by a linked list.
+ * Polynomials are immutable: their values cannot be changed after they are created. It includes
+ * methods for addition, subtraction, multiplication, comparison and evaluation.
  *
  * @author ev
  */
@@ -53,8 +49,7 @@ public class PolynomialLinkedList {
     }
 
     /**
-     * This method is used to get a string that represents the linked list
-     * polynomial.
+     * This method is used to get a string that represents the linked list polynomial.
      *
      * @return the string that represents the linked list polynomial
      */
@@ -104,8 +99,7 @@ public class PolynomialLinkedList {
     }
 
     /**
-     * This method is used to enter the coefficients and exponents of the
-     * polynomial.
+     * This method is used to enter the coefficients and exponents of the polynomial.
      */
     public void enterTerms() {
         float a;
@@ -122,9 +116,8 @@ public class PolynomialLinkedList {
     }
 
     /**
-     * This method is used to insert terms in the linked list of the polynomial.
-     * A different from the method for store terms, add the coefficients of the
-     * terms with equal degree.
+     * This method is used to insert terms in the linked list of the polynomial. A different from
+     * the method for store terms, add the coefficients of the terms with equal degree.
      *
      * @param coefficient the coefficient to be inserted.
      * @param exponent the exponent to be inserted.
@@ -193,8 +186,7 @@ public class PolynomialLinkedList {
      * This method is used to evaluate this polynomial at the point x.
      *
      * @param x the point at which to evaluate the polynomial.
-     * @return the result of evaluating the integer whose value is
-     * {@code (this(x))}.
+     * @return the result of evaluating the integer whose value is {@code (this(x))}.
      */
     public float evaluate(float x) {
         float result = 0;
@@ -209,8 +201,8 @@ public class PolynomialLinkedList {
     }
 
     /**
-     * This method is used to add two polynomial linked list. It means that it
-     * adds the coefficients of the terms with the same degree.
+     * This method is used to add two polynomial linked list. It means that it adds the coefficients
+     * of the terms with the same degree.
      *
      * @param B the other linked list polynomial
      * @return the polynomial whose value is {@code (this(x) + that(x))}
@@ -252,8 +244,8 @@ public class PolynomialLinkedList {
     }
 
     /**
-     * This method is used to multiply two polynomial linked list. Takes time
-     * proportional to the product of the degrees.
+     * This method is used to multiply two polynomial linked list. Takes time proportional to the
+     * product of the degrees.
      *
      * @param B the other linked list polynomial
      * @return the polynomial whose value is {@code (this(x) * that(x))}
@@ -332,8 +324,8 @@ public class PolynomialLinkedList {
     }
 
     /**
-     * This method is used to multiply a polynomial linked list with polynomial
-     * vector form 1 and returns a polynomial vector form 2.
+     * This method is used to multiply a polynomial linked list with polynomial vector form 1 and
+     * returns a polynomial vector form 2.
      *
      * @param B the other linked list polynomial.
      * @return the polynomial whose value is {@code (this(x) * that(x))}
@@ -357,8 +349,8 @@ public class PolynomialLinkedList {
     }
 
     /**
-     * This method is used to divide a polynomial linked list with polynomial
-     * vector form 1 and returns a polynomial vector form 2.
+     * This method is used to divide a polynomial linked list with polynomial vector form 1 and
+     * returns a polynomial vector form 2.
      *
      * @param B the other linked list polynomial.
      * @return the polynomial whose value is {@code (this(x) / that(x))}
@@ -389,6 +381,7 @@ public class PolynomialLinkedList {
     }
 }
 
+
 /**
  * The {@code Node} class represents a node for linked lists.
  *
@@ -397,8 +390,8 @@ public class PolynomialLinkedList {
 class Node {
 
     private float coefficient; // coefficient
-    private int exponent;      // exponent (0 for independent term)
-    private Node next;         // next node head
+    private int exponent; // exponent (0 for independent term)
+    private Node next; // next node head
 
     /**
      * Initializes a new node.
