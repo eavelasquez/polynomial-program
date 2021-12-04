@@ -16,6 +16,10 @@ package com.polynomialprogram.app;
 
 import javax.swing.JOptionPane;
 
+import org.beryx.textio.TerminalProperties;
+import org.beryx.textio.TextIO;
+import org.beryx.textio.TextTerminal;
+
 /**
  * The {@code PolynomialF1} class represents a polynomial vector form 1.
  * Polynomials are immutable: their values cannot be changed after they are
@@ -26,8 +30,8 @@ import javax.swing.JOptionPane;
  */
 public class PolynomialF1 {
 
-    private int degree;     // degree of polynomial
-    private float[] coef;   // coefficients p(x) = sum { coef[i] * x^i }
+    private int degree; // degree of polynomial
+    private float[] coef; // coefficients p(x) = sum { coef[i] * x^i }
 
     /**
      * Initializes a new polynomial x^b
@@ -130,28 +134,30 @@ public class PolynomialF1 {
     /**
      * This method is used to enter the coefficients of the polynomial.
      */
-    public void enterTerms() {
-        float a;
-        int exponent;
-        String answer = "";
-        answer = JOptionPane.showInputDialog("Do you want to enter term? Y/N");
-        while (answer.equalsIgnoreCase("s")) {
-            a = Float.parseFloat(JOptionPane.showInputDialog("Enter the coefficient:"));
-            exponent = Integer.parseInt(JOptionPane.showInputDialog("Enter the exponent:"));
-            this.storeTerm(a, exponent);
-            answer = JOptionPane.showInputDialog("Do you want to enter term? Y/N");
+    public void enterTerms(TextIO textIO, TextTerminal<?> terminal, TerminalProperties<?> props) {
+        boolean continueAddTerms = false;
 
-            if (!answer.equalsIgnoreCase("y") && this.coef[1] == 0) {
-                JOptionPane.showMessageDialog(null, "You must enter term with the degree of the polynomial.");
-                answer = "y";
-            }
-        }
+        terminal.println("Agregar terminos al polinomio");
+
+        props.setPromptBold(false);
+        props.setPromptUnderline(false);
+        props.setInputColor("yellow");
+        do {
+            props.setPromptUnderline(true);
+            terminal.println("Nuevo termino");
+            props.setPromptUnderline(false);
+
+            float coe = textIO.newFloatInputReader().read("coeficiente");
+            int _degree = textIO.newIntInputReader().withMinVal(0).withMaxVal(degree).read("grado");
+            this.storeTerm(coe, _degree);
+            continueAddTerms = textIO.newBooleanInputReader().read("continuar agregando terminos?");
+        } while (continueAddTerms);
     }
 
     /**
      * This method is used to store terms in the polynomial.
      *
-     * @param a the coefficient to be stored.
+     * @param a        the coefficient to be stored.
      * @param exponent the exponent to be stored.
      */
     public void storeTerm(float a, int exponent) {
@@ -210,7 +216,7 @@ public class PolynomialF1 {
      * the method for store terms, add the coefficients of the terms with equal
      * degree.
      *
-     * @param a the coefficient to be inserted.
+     * @param a        the coefficient to be inserted.
      * @param exponent the exponent to be inserted.
      */
     public void insertTerm(float a, int exponent) {
@@ -394,7 +400,7 @@ public class PolynomialF1 {
      *
      * @param B the other polynomial
      * @return {@code true} if this polynomial equals {@code B}; {@code false}
-     * otherwise
+     *         otherwise
      */
     public boolean comparisonPolynomialF1WithPolynomialF2(PolynomialF2 B) {
         int i = 1, j = 1, exponentA, exponentB;
