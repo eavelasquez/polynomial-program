@@ -11,7 +11,7 @@
  *  p(x) * q(x) = 12x^5 + 9x^4 + 26x^3 + 18x^2 + 10x + 5
  *
  ***************************************************************************** */
-package polynomialprogram;
+package com.polynomialprogram.app;
 
 import javax.swing.JOptionPane;
 
@@ -394,7 +394,7 @@ public class PolynomialLinkedList {
  */
 class Node {
 
-    private float coefficient; // coefficient 
+    private float coefficient; // coefficient
     private int exponent;      // exponent (0 for independent term)
     private Node next;         // next node head
 

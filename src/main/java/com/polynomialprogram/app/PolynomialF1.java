@@ -12,7 +12,7 @@
  *  p(x) / q(x)
  *
  ***************************************************************************** */
-package polynomialprogram;
+package com.polynomialprogram.app;
 
 import javax.swing.JOptionPane;
 
@@ -144,7 +144,7 @@ public class PolynomialF1 {
             if (!answer.equalsIgnoreCase("y") && this.coef[1] == 0) {
                 JOptionPane.showMessageDialog(null, "You must enter term with the degree of the polynomial.");
                 answer = "y";
-            } 
+            }
         }
     }
 

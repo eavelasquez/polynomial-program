@@ -12,7 +12,7 @@
  *  p(x) / q(x)
  *
  ***************************************************************************** */
-package polynomialprogram;
+package com.polynomialprogram.app;
 
 import javax.swing.JOptionPane;
 
