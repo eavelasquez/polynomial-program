@@ -428,4 +428,32 @@ public class PolynomialF1 {
 
         return true;
     }
+
+    /**
+     * This method is used to compares this polynomial to the specified polynomial of the class
+     * PolynomialLinkedList.
+     *
+     * @param B the other polynomial
+     * @return {@code true} if this polynomial equals {@code B}; {@code false} otherwise
+     */
+    public boolean comparisonPolynomialF1WithPolynomialLinkedList(PolynomialLinkedList B) {
+        int i = 1, exponentA, exponentB;
+        Node startB = B.getHead();
+
+        while (i < coef[0] + 2 && startB != null) {
+            exponentA = (int) coef[0] + 1 - i;
+            exponentB = startB.getExponent();
+
+            if (exponentA != exponentB) {
+                return false;
+            }
+            if (coef[i] != startB.getCoefficient()) {
+                return false;
+            }
+            i += 1;
+            startB = startB.getNext();
+        }
+
+        return !(i < coef[0] + 2 || startB != null);
+    }
 }

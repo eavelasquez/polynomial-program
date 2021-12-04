@@ -183,6 +183,34 @@ public class PolynomialLinkedList {
     }
 
     /**
+     * This method is used to remove the first term with coefficient negative in
+     * the linked list of the polynomial.
+     *
+     * @return confirmation if term was found and removed.
+     */
+    public boolean removeFirstTermWithCoefficientNegative() {
+        Node start = this.head, previous = null;
+        boolean isFound = false;
+
+        while (start != null && start.getCoefficient() >= 0) {
+            previous = start;
+            start = start.getNext();
+        }
+
+        if (start != null && start.getCoefficient() < 0) {
+            isFound = true;
+
+            if (start == this.head) {
+                this.head = start.getNext();
+            } else {
+                previous.setNext(start.getNext());
+            }
+        }
+
+        return isFound;
+    }
+
+    /**
      * This method is used to evaluate this polynomial at the point x.
      *
      * @param x the point at which to evaluate the polynomial.
@@ -380,7 +408,6 @@ public class PolynomialLinkedList {
         return R;
     }
 }
-
 
 /**
  * The {@code Node} class represents a node for linked lists.
