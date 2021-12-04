@@ -25,6 +25,16 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.beryx</groupId>
+      <artifactId>text-io</artifactId>
+      <version>3.4.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.beryx</groupId>
+      <artifactId>text-io-web</artifactId>
+      <version>3.4.1</version>
+    </dependency>
   </dependencies>
 
   <build>
