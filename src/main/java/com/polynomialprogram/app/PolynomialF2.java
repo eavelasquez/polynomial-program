@@ -155,7 +155,7 @@ public class PolynomialF2 {
     public void resize(int n) {
         this.size += n;
         float aux[] = new float[this.size];
-        int lenght = n < 0 && this.size >= polynomial[0] * 2 + 1 ? this.size
+        int lenght = n < 0 && this.size >= (polynomial[0] * 2 + 1) ? this.size
                 : (int) polynomial[0] * 2 + 1;
 
         // Manual array copy.
@@ -176,7 +176,7 @@ public class PolynomialF2 {
      */
     public void insertTerm(float coefficient, int exponent) {
         if (coefficient != 0) {
-            int i = 1, j;
+            int i = 1;
 
             while (i < polynomial[0] * 2 + 1 && polynomial[i] > exponent
                     && polynomial[i + 1] != 0) {
@@ -189,20 +189,18 @@ public class PolynomialF2 {
                 if (sum != 0) {
                     polynomial[i + 1] = sum;
                 } else {
-                    for (j = i; j < (polynomial[0] * 2 - 1); j += 2) {
+                    for (int j = i; j < (polynomial[0] * 2 - 1); j += 2) {
                         polynomial[j] = polynomial[j + 2];
                         polynomial[j + 1] = polynomial[j + 3];
                     }
                     polynomial[0] -= 1;
-                    this.resize(-2);
                 }
             } else {
                 if (polynomial[0] * 2 + 1 == this.size) {
                     this.resize(2);
                 }
-
-                for (j = (int) polynomial[0] * 2 + 1; j >= i; j--) {
-                    polynomial[j + 2] = polynomial[j];
+                for (int k = (int) (polynomial[0] * 2 - 1); k >= i; k--) {
+                    polynomial[k + 2] = polynomial[k];
                 }
                 polynomial[0] += 1;
                 polynomial[i] = exponent;
