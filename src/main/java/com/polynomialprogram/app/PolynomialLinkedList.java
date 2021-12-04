@@ -30,6 +30,15 @@ public class PolynomialLinkedList {
         this.head = null;
     }
 
+    public PolynomialLinkedList(PolynomialF1 from) {
+        this.head = null;
+        for (int i = 1; i < from.getCoef(0) + 2; i++) {
+            if (from.getCoef(i) != 0) {
+                this.storeTerm(from.getCoef(i), (int) (from.getCoef(0) + 1 - i));
+            }
+        }
+    }
+
     /**
      * Returns the node head of this linked list.
      *
@@ -147,8 +156,10 @@ public class PolynomialLinkedList {
 
                 if (start != this.head) {
                     this.head = newNode;
-                } else {
+                } else if (previous != null) {
                     previous.setNext(newNode);
+                } else if (this.head == null) {
+                    this.head = newNode;
                 }
             }
         }
@@ -180,6 +191,32 @@ public class PolynomialLinkedList {
         }
 
         return isFound;
+    }
+
+    public boolean removeNegativeFirs() {
+        Node currentTerm = head, previous = null;
+        boolean isRemoved = false;
+
+        if (currentTerm == null) {
+            return false;
+        }
+
+        while (currentTerm.getCoefficient() >= 0) {
+            previous = currentTerm;
+            currentTerm = currentTerm.getNext();
+        }
+
+        if (currentTerm.getCoefficient() < 0) {
+            isRemoved = true;
+
+            if (currentTerm == this.head) {
+                this.head = currentTerm.getNext();
+            } else {
+                previous.setNext(currentTerm.getNext());
+            }
+        }
+
+        return isRemoved;
     }
 
     /**
@@ -331,7 +368,7 @@ public class PolynomialLinkedList {
         float coefficientR, coefficientA;
         PolynomialLinkedList R = new PolynomialLinkedList();
 
-        while (startA != null && startA.getExponent() >= startB.getExponent()) {
+        while ((startA != null && startB != null) && startA.getExponent() >= startB.getExponent()) {
             exponentR = startA.getExponent() - startB.getExponent();
             coefficientR = startA.getCoefficient() / startB.getCoefficient();
 
@@ -384,10 +421,14 @@ public class PolynomialLinkedList {
      * @return the polynomial whose value is {@code (this(x) / that(x))}
      */
     public PolynomialF2 dividePolynomialLinkedListWithPolynomialF1(PolynomialF1 B) {
+        PolynomialLinkedList newFormB = new PolynomialLinkedList(B);
+        PolynomialLinkedList resultDivide = this.divide(newFormB);
+        PolynomialF2 result = new PolynomialF2(resultDivide);
         Node startA = this.head;
         int exponentR, exponentA;
         float coefficientR, coefficientA;
         PolynomialF2 R = new PolynomialF2(0);
+        coefficientR = startA.getCoefficient() / B.getCoef(1);
 
         while (startA != null && startA.getExponent() >= B.getCoef(0)) {
             exponentR = (int) (startA.getExponent() - B.getCoef(0));
@@ -406,6 +447,27 @@ public class PolynomialLinkedList {
         }
 
         return R;
+    }
+
+    public boolean compareWithPolynomialF1(PolynomialF1 polynomialB) {
+        Node startA = this.getHead();
+        int i = 1, exponentB, exponentA;
+
+        while (i < polynomialB.getCoef(0) + 2 && startA != null) {
+            exponentB = (int) polynomialB.getCoef(0) + 1 - i;
+            exponentA = startA.getExponent();
+
+            if (exponentB != exponentA) {
+                return false;
+            }
+            if (polynomialB.getCoef(i) != startA.getCoefficient()) {
+                return false;
+            }
+            i += 1;
+            startA = startA.getNext();
+        }
+
+        return true;
     }
 }
 
