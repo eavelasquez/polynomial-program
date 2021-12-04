@@ -40,6 +40,22 @@ public class PolynomialF2 {
         this.polynomial[0] = n;
     }
 
+    public PolynomialF2(PolynomialLinkedList from) {
+        int degree = from.getHead().getExponent();
+
+        this.setSize(degree);
+        this.polynomial = new float[this.size];
+        this.polynomial[0] = degree;
+
+
+        Node start = from.getHead();
+        if (start != null) {
+            while (start != null) {
+                this.insertTerm(start.getCoefficient(), start.getExponent());
+            }
+        }
+    }
+
     /**
      * Returns the size of this polynomial.
      *
@@ -197,7 +213,7 @@ public class PolynomialF2 {
                 }
             } else {
                 if (polynomial[0] * 2 + 1 == this.size) {
-                    this.resize(2);
+                    this.resize(3);
                 }
                 for (int k = (int) (polynomial[0] * 2 - 1); k >= i; k--) {
                     polynomial[k + 2] = polynomial[k];
