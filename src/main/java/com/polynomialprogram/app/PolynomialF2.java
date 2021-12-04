@@ -14,6 +14,7 @@
  ***************************************************************************** */
 package com.polynomialprogram.app;
 
+import java.util.Random;
 import javax.swing.JOptionPane;
 
 /**
@@ -83,6 +84,12 @@ public class PolynomialF2 {
     }
 
     /**
+     * This method is used to generate polynomial vector form 2 random.
+     */
+    public void generatePolynomialF1Random() {
+    }
+
+    /**
      * This method is used to get a string that represents the polynomial.
      *
      * @return the string that represents the polynomial.
@@ -96,21 +103,6 @@ public class PolynomialF2 {
         }
 
         return string;
-    }
-
-    /**
-     * This method is used to enter the coefficients and exponents of the polynomial.
-     */
-    public void enterTerms(int canterm) {
-        float a;
-        int exponent;
-        boolean flag = true;
-        for (int i = 1; i <= canterm; i++) {
-            a = Float.parseFloat(JOptionPane.showInputDialog("Enter the coefficient:"));
-            exponent = Integer.parseInt(JOptionPane.showInputDialog("Enter the exponent:"));
-            flag = this.storeTerm(a, exponent);
-            i = flag == false ? i - 1 : i;
-        }
     }
 
     /**
@@ -140,6 +132,25 @@ public class PolynomialF2 {
         }
 
         return isExist;
+    }
+
+    /**
+     * This method is used to enter the coefficients and exponents of the
+     * polynomial.
+     *
+     * @param n number of terms of the polynomial.
+     */
+    public void enterTerms(int n) {
+        float a;
+        int exponent;
+        boolean flag;
+        for (int i = 1; i <= n; i++) {
+            a = Float.parseFloat(JOptionPane.showInputDialog("Enter the coefficient:"));
+            exponent = Integer.parseInt(JOptionPane.showInputDialog("Enter the exponent:"));
+
+            flag = this.storeTerm(a, exponent);
+            i = flag == false ? i - 1 : i;
+        }
     }
 
     /**
@@ -180,6 +191,7 @@ public class PolynomialF2 {
 
             if (i < polynomial[0] * 2 + 1 && polynomial[i] == exponent && polynomial[i + 1] != 0) {
                 float sum = polynomial[i + 1] + coefficient;
+
                 if (sum != 0) {
                     polynomial[i + 1] = sum;
                 } else {
@@ -242,9 +254,11 @@ public class PolynomialF2 {
      */
     public float evaluate(float x) {
         float result = 0;
+
         for (int i = 1; i < polynomial[0] * 2 + 1; i += 2) {
             result += polynomial[i + 1] * (float) (Math.pow(x, polynomial[i]));
         }
+
         return result;
     }
 
@@ -282,12 +296,14 @@ public class PolynomialF2 {
         while (i < polynomial[0] * 2 + 1) {
             exponentA = (int) polynomial[i];
             coefficientA = polynomial[i + 1];
+
             R.insertTerm(coefficientA, exponentA);
             i += 2;
         }
         while (j < B.getData(0) * 2 + 1) {
             exponentB = (int) B.getData(j);
             coefficientB = B.getData(j + 1);
+
             R.insertTerm(coefficientB, exponentB);
             j += 2;
         }
@@ -349,6 +365,7 @@ public class PolynomialF2 {
             for (int i = 1; i < B.getData(0) * 2 + 1; i += 2) {
                 exponentA = exponentR + (int) B.getData(i);
                 coefficientA = coefficientR * B.getData(i + 1);
+
                 this.insertTerm(-coefficientA, exponentA);
             }
         }

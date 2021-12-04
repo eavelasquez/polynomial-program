@@ -66,29 +66,13 @@ public class PolynomialLinkedList {
             System.out.println("The linked list of the polynomial is empty.");
         } else {
             while (start != null) {
-                if (start.getCoefficient() > 0 && start != this.head) {
-                    string += " + ";
-                }
+                string += start.getCoefficient() > 0 && start != this.head ? " + " : "";
                 string += start.getCoefficient() + "x^" + start.getExponent();
                 start = start.getNext();
             }
         }
-        return string;
-    }
 
-    /**
-     * This method is used to enter the coefficients and exponents of the polynomial.
-     */
-    public void enterTerms() {
-        float a;
-        int exponent;
-        String answer = JOptionPane.showInputDialog("Do you want to enter term? Y/N");
-        while (answer.equalsIgnoreCase("y")) {
-            a = Float.parseFloat(JOptionPane.showInputDialog("Enter the coefficient:"));
-            exponent = Integer.parseInt(JOptionPane.showInputDialog("Enter the exponent:"));
-            this.storeTerm(a, exponent);
-            answer = JOptionPane.showInputDialog("Do you want to enter term? Y/N");
-        }
+        return string;
     }
 
     /**
@@ -116,6 +100,24 @@ public class PolynomialLinkedList {
             } else {
                 previous.setNext(newNode);
             }
+        }
+    }
+
+    /**
+     * This method is used to enter the coefficients and exponents of the
+     * polynomial.
+     */
+    public void enterTerms() {
+        float a;
+        int exponent;
+        String answer = JOptionPane.showInputDialog("Do you want to enter term? Y/N");
+
+        while (answer.equalsIgnoreCase("y")) {
+            a = Float.parseFloat(JOptionPane.showInputDialog("Enter the coefficient:"));
+            exponent = Integer.parseInt(JOptionPane.showInputDialog("Enter the exponent:"));
+
+            this.storeTerm(a, exponent);
+            answer = JOptionPane.showInputDialog("Do you want to enter term? Y/N");
         }
     }
 

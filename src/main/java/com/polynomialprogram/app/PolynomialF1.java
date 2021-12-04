@@ -14,6 +14,7 @@
  ***************************************************************************** */
 package com.polynomialprogram.app;
 
+import java.util.Random;
 import javax.swing.JOptionPane;
 
 /**
@@ -82,31 +83,42 @@ public class PolynomialF1 {
         coef[i] = a;
     }
 
-    @Override
-    public String toString() {
-        if (degree == -1) {
-            return "0";
-        } else if (degree == 0) {
-            return "" + coef[0];
-        } else if (degree == 1) {
-            return coef[1] + "x " + coef[0];
+//    @Override
+//    public String toString() {
+//        if (degree == -1) {
+//            return "0";
+//        } else if (degree == 0) {
+//            return "" + coef[0];
+//        } else if (degree == 1) {
+//            return coef[1] + "x " + coef[0];
+//        }
+//        String s = coef[degree] + "x^" + degree;
+//        for (int i = degree - 1; i >= 0; i--) {
+//            if (coef[i] == 0) {
+//                continue;
+//            } else if (coef[i] > 0) {
+//                s = s + " + " + (coef[i]);
+//            } else if (coef[i] < 0) {
+//                s = s + " - " + (-coef[i]);
+//            }
+//            if (i == 1) {
+//                s = s + "x";
+//            } else if (i > 1) {
+//                s = s + "x^" + i;
+//            }
+//        }
+//        return "PolynomialF1{" + s + '}';
+//    }
+    /**
+     * This method is used to generate polynomial vector form 1 random.
+     */
+    public void generatePolynomialF1Random() {
+        Random random = new Random();
+
+        for (int i = 1; i < coef[0] + 2; i++) {
+            coef[i] = random.nextInt((int) coef[0]);
+            // coef[i] = (int) (random.nextInt((int) coef[0]) * Math.pow(-1, random.nextInt((int) coef[0])));
         }
-        String s = coef[degree] + "x^" + degree;
-        for (int i = degree - 1; i >= 0; i--) {
-            if (coef[i] == 0) {
-                continue;
-            } else if (coef[i] > 0) {
-                s = s + " + " + (coef[i]);
-            } else if (coef[i] < 0) {
-                s = s + " - " + (-coef[i]);
-            }
-            if (i == 1) {
-                s = s + "x";
-            } else if (i > 1) {
-                s = s + "x^" + i;
-            }
-        }
-        return "PolynomialF1{" + s + '}';
     }
 
     /**
@@ -128,27 +140,6 @@ public class PolynomialF1 {
     }
 
     /**
-     * This method is used to enter the coefficients of the polynomial.
-     */
-    public void enterTerms() {
-        float a;
-        int exponent;
-        String answer = "";
-        answer = JOptionPane.showInputDialog("Do you want to enter term? Y/N");
-        while (answer.equalsIgnoreCase("s")) {
-            a = Float.parseFloat(JOptionPane.showInputDialog("Enter the coefficient:"));
-            exponent = Integer.parseInt(JOptionPane.showInputDialog("Enter the exponent:"));
-            this.storeTerm(a, exponent);
-            answer = JOptionPane.showInputDialog("Do you want to enter term? Y/N");
-
-            if (!answer.equalsIgnoreCase("y") && this.coef[1] == 0) {
-                JOptionPane.showMessageDialog(null, "You must enter term with the degree of the polynomial.");
-                answer = "y";
-            }
-        }
-    }
-
-    /**
      * This method is used to store terms in the polynomial.
      *
      * @param a the coefficient to be stored.
@@ -166,6 +157,27 @@ public class PolynomialF1 {
         } else {
             System.out.println("The exponent \'" + exponent
                     + "\' does not correspond to the degree of the polynomial \'" + degree + "\'");
+        }
+    }
+
+    /**
+     * This method is used to enter the coefficients of the polynomial.
+     */
+    public void enterTerms() {
+        float a;
+        int exponent;
+        String answer = JOptionPane.showInputDialog("Do you want to enter term? Y/N");
+        while (answer.equalsIgnoreCase("y")) {
+            a = Float.parseFloat(JOptionPane.showInputDialog("Enter the coefficient:"));
+            exponent = Integer.parseInt(JOptionPane.showInputDialog("Enter the exponent:"));
+
+            this.storeTerm(a, exponent);
+            answer = JOptionPane.showInputDialog("Do you want to enter term? Y/N");
+
+            if (!answer.equalsIgnoreCase("y") && this.coef[1] == 0) {
+                JOptionPane.showMessageDialog(null, "You must enter term with the degree of the polynomial.");
+                answer = "y";
+            }
         }
     }
 
@@ -194,7 +206,7 @@ public class PolynomialF1 {
      */
     public void resize(int exponent) {
         int i = exponent + 1;
-        this.degree += 2;
+        this.degree = exponent + 2;
         float aux[] = new float[this.degree];
 
         for (int j = (int) coef[0] + 1; j > 0; j--) {
@@ -271,7 +283,7 @@ public class PolynomialF1 {
             exponentB = (int) B.getCoef(0) + 1 - j;
 
             if (exponentA > exponentB) {
-                R.insertTerm(B.getCoef(i), exponentA);
+                R.insertTerm(coef[i], exponentA);
                 i += 1;
             } else if (exponentB > exponentA) {
                 R.setCoef(B.getCoef(j), (int) (B.getCoef(0) + 1 - exponentB));
@@ -299,7 +311,7 @@ public class PolynomialF1 {
 
         for (int i = 1; i < B.getCoef(0) + 2; i++) {
             for (int j = 1; j < coef[0] + 2; j++) {
-                int exponentR = (int) ((coef[0] + 1 - j) + (B.getCoef(0) + 1 - i));
+                int exponentR = (int) ((B.getCoef(0) + 1 - i) + (coef[0] + 1 - j));
                 float coefficientR = coef[j] * B.getCoef(i);
                 R.insertTerm(coefficientR, exponentR);
             }
@@ -314,7 +326,7 @@ public class PolynomialF1 {
      * @return the duplicate of the polynomial.
      */
     public PolynomialF1 copy() {
-        PolynomialF1 duplicate = new PolynomialF1(this.degree);
+        PolynomialF1 duplicate = new PolynomialF1((int) coef[0]);
 
         for (int i = 1; i < coef[0] + 2; i++) {
             duplicate.setCoef(coef[i], i);
@@ -344,6 +356,7 @@ public class PolynomialF1 {
                 exponentB = (int) B.getCoef(0) + 1 - i;
                 exponentA = exponentR + exponentB;
                 coefficientA = coefficientR * B.getCoef(i);
+
                 this.insertTerm(-coefficientA, exponentA);
             }
             this.adjust();
@@ -363,7 +376,7 @@ public class PolynomialF1 {
         int i = 1, j = 1, exponentA, exponentB;
         PolynomialLinkedList R = new PolynomialLinkedList();
 
-        while (i < coef[0] + 1 && j < B.getData(0) * 2 + 1) {
+        while (i < coef[0] + 2 && j < B.getData(0) * 2 + 1) {
             exponentA = (int) coef[0] + 1 - i;
             exponentB = (int) B.getData(1);
 
@@ -399,7 +412,7 @@ public class PolynomialF1 {
     public boolean comparisonPolynomialF1WithPolynomialF2(PolynomialF2 B) {
         int i = 1, j = 1, exponentA, exponentB;
 
-        while (i < coef[0] + 1 && j < B.getData(0) * 2 + 1) {
+        while (i < coef[0] + 2 && j < B.getData(0) * 2 + 1) {
             exponentA = (int) coef[0] + 1 - i;
             exponentB = (int) B.getData(j);
 
