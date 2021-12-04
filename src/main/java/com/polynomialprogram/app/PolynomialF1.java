@@ -131,8 +131,10 @@ public class PolynomialF1 {
 
         for (int i = 1; i < coef[0] + 2; i++) {
             if (coef[i] != 0) {
-                string += coef[i] > 0 && i > 1 ? " + " : "";
-                string += coef[i] + "x^" + (int) (coef[0] + 1 - i);
+                int exponent = (int) (coef[0] + 1 - i);
+                string += coef[i] > 0 && i > 1 ? "+" : "";
+                string += coef[i] + (exponent > 0 ? "x" : "")
+                        + (exponent > 1 ? ("^" + exponent) : "");
             }
         }
 
