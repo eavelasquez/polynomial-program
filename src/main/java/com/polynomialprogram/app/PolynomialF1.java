@@ -43,6 +43,21 @@ public class PolynomialF1 {
         this.coef[0] = n;
     }
 
+    public PolynomialF1(int n, float... terms) {
+        if (n < 0) {
+            throw new IllegalArgumentException("degree cannot be negative: " + n);
+        }
+        this.degree = n;
+        this.coef = new float[this.degree + 2];
+        this.coef[0] = this.degree;
+        for (int i = 0; i < coef.length && i < terms.length; i++) {
+            if (i + 1 > coef.length - 1) {
+                break;
+            }
+            coef[i + 1] = terms[i];
+        }
+    }
+
     public PolynomialF1(PolynomialF1 from) {
         this.degree = from.degree;
         this.coef = Arrays.copyOf(from.coef, from.coef.length);
