@@ -10,9 +10,8 @@
  */
 package com.polynomialprogram.app;
 
+import java.util.Arrays;
 import java.util.Random;
-import javax.swing.JOptionPane;
-
 import org.beryx.textio.TerminalProperties;
 import org.beryx.textio.TextIO;
 import org.beryx.textio.TextTerminal;
@@ -42,6 +41,11 @@ public class PolynomialF1 {
         this.degree = n + 2;
         this.coef = new float[this.degree];
         this.coef[0] = n;
+    }
+
+    public PolynomialF1(PolynomialF1 from) {
+        this.degree = from.degree;
+        this.coef = Arrays.copyOf(from.coef, from.coef.length);
     }
 
     /**
@@ -126,19 +130,26 @@ public class PolynomialF1 {
      *
      * @return the string that represents the polynomial.
      */
-    public String show() {
+    public String toString() {
         String string = "";
 
         for (int i = 1; i < coef[0] + 2; i++) {
             if (coef[i] != 0) {
                 int exponent = (int) (coef[0] + 1 - i);
+                String literal = (exponent > 0 ? "x" : "");
+                String coeff = ((coef[i] == 1 || coef[i] == -1) && !literal.isEmpty() ? ""
+                        : ("" + coef[i]));
+                coeff += ((coeff.isEmpty() && coef[i] == -1) ? "-" : "");
                 string += coef[i] > 0 && i > 1 ? "+" : "";
-                string += coef[i] + (exponent > 0 ? "x" : "")
-                        + (exponent > 1 ? ("^" + exponent) : "");
+                string += coeff + literal + (exponent > 1 ? ("^" + exponent) : "");
             }
         }
 
         return string;
+    }
+
+    public String show() {
+        return this.toString();
     }
 
     /**
@@ -349,10 +360,11 @@ public class PolynomialF1 {
         int exponentR, exponentA, exponentB;
         float coefficientR, coefficientA;
         PolynomialF1 R = new PolynomialF1((int) (coef[0] - B.getCoef(0)));
+        PolynomialF1 A = new PolynomialF1(this);
 
-        while (coef[0] >= B.getCoef(0)) {
-            exponentR = (int) (coef[0] - B.getCoef(0));
-            coefficientR = coef[1] / B.getCoef(1);
+        while (A.coef[0] >= B.getCoef(0)) {
+            exponentR = (int) (A.coef[0] - B.getCoef(0));
+            coefficientR = A.coef[1] / B.getCoef(1);
 
             R.insertTerm(coefficientR, exponentR);
 
@@ -361,9 +373,9 @@ public class PolynomialF1 {
                 exponentA = exponentR + exponentB;
                 coefficientA = coefficientR * B.getCoef(i);
 
-                this.insertTerm(-coefficientA, exponentA);
+                A.insertTerm(-coefficientA, exponentA);
             }
-            this.adjust();
+            A.adjust();
         }
 
         return R;
