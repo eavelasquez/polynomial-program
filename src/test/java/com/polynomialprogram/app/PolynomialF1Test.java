@@ -32,11 +32,42 @@ public class PolynomialF1Test {
     return Stream.of(list.toArray(pols));
   }
 
+  private static Stream<Arguments> providerForPolynomialsForAdd() {
+    List<Arguments> list = new ArrayList<Arguments>();
+    list.add(
+        Arguments.of(new PolynomialF1(3, 1, 0, 1, 5), new PolynomialF1(1, 1, 1), "x^3+2.0x+6.0"));
+
+    list.add(Arguments.of(new PolynomialF1(4, 10, 9, -8, 6), new PolynomialF1(3, 1, 0, 1, 5),
+        "10.0x^4+10.0x^3-8.0x^2+7.0x+5.0"));
+
+    list.add(Arguments.of(new PolynomialF1(4, 1, 0, 6, 0, 6), new PolynomialF1(2, 1, 0, 5),
+        "x^4+7.0x^2+11.0"));
+
+    list.add(Arguments.of(new PolynomialF1(3, 4, -7, -11, 5), new PolynomialF1(1, 4, 5),
+        "4.0x^3-7.0x^2-7.0x+10.0"));
+
+    list.add(Arguments.of(new PolynomialF1(2, 2, 5, -18), new PolynomialF1(1, 1, 4),
+        "2.0x^2+6.0x-14.0"));
+
+    list.add(
+        Arguments.of(new PolynomialF1(3, 1, 1), new PolynomialF1(2, 1, 1, -2), "x^3+2.0x^2+x-2.0"));
+
+    Arguments[] pols = new Arguments[list.size()];
+    return Stream.of(list.toArray(pols));
+  }
+
 
   @ParameterizedTest
   @MethodSource("providerForPolynomialsForDivide")
   public void testDivide(PolynomialF1 pol1, PolynomialF1 pol2, String expected) {
     PolynomialF1 result = pol1.divide(pol2);
+    assertEquals(result.show(), expected);
+  }
+
+  @ParameterizedTest
+  @MethodSource("providerForPolynomialsForAdd")
+  public void testAdd(PolynomialF1 pol1, PolynomialF1 pol2, String expected) {
+    PolynomialF1 result = pol1.add(pol2);
     assertEquals(result.show(), expected);
   }
 
