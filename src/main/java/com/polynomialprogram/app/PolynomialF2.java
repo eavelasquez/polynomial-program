@@ -108,9 +108,12 @@ public class PolynomialF2 {
 
         for (int i = 1; i < polynomial[0] * 2 + 1; i += 2) {
             int exponent = (int) polynomial[i];
-            string += polynomial[i + 1] > 0 && i > 1 ? " + " : "";
-            string += polynomial[i + 1] + (exponent > 0 ? "x" : "")
-                    + (exponent > 1 ? ("^" + exponent) : "");
+            String literal = (exponent > 0 ? "x" : "");
+            String coeff = ((polynomial[i + 1] == 1 || polynomial[i + 1] == -1) && !literal.isEmpty()) ? "" : ("" + polynomial[i + 1]);
+            coeff += ((coeff.isEmpty() && polynomial[i + 1] == -1) ? "-": "");
+
+            string += polynomial[i + 1] > 0 && i > 1 ? "+" : "";
+            string += coeff + literal + (exponent > 1 ? ("^" + exponent) : "");
         }
 
         return string;
