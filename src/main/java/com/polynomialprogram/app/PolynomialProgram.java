@@ -437,7 +437,7 @@ public class PolynomialProgram {
                         if (A.getHead().getExponent() >= M.getCoef(0)) {
                             CopiaA = A.copy();
 
-                            L = A.dividePolynomialLinkedListWithPolynomialF1(M);
+                            L = CopiaA.dividePolynomialLinkedListWithPolynomialF1(M);
                             JOptionPane.showMessageDialog(null,
                                     "Datos del polinomio 1\n" + A.show()
                                             + "\nDatos del polinomio 2\n" + M.show()
