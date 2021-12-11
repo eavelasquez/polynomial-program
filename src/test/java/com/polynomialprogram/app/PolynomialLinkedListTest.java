@@ -33,6 +33,26 @@ public class PolynomialLinkedListTest {
     Arguments[] pols = new Arguments[list.size()];
     return Stream.of(list.toArray(pols));
   }
+  private static Stream<Arguments> providerForPolynomialsForMultiply() {
+    List<Arguments> list = new ArrayList<Arguments>();
+    list.add(Arguments.of(new PolynomialLinkedList(1, 0, 1, 5), new PolynomialF1(1, 1, 1),
+        "x^4+x^3+x^2+x+5.00.0x"));
+
+    list.add(Arguments.of(new PolynomialLinkedList(10, 9, -8, 6, 0),
+        new PolynomialF1(3, 1, 1, 1, 5), "10.0x^7+19.0x^6+11.0x^5+57.0x^4+43.0x^3-34.0x^2+30.0x"));
+
+    list.add(Arguments.of(new PolynomialLinkedList(4, -7, -11, 5), new PolynomialF1(1, 4, 5),
+        "16.0x^4-8.0x^3-79.0x^2-35.0x+25.0"));
+
+    list.add(Arguments.of(new PolynomialLinkedList(2, 5, -18, 0), new PolynomialF1(1, 1, 4),
+        "2.0x^4+13.0x^3+2.0x^2-72.0x"));
+
+    list.add(
+        Arguments.of(new PolynomialLinkedList(1, 0, 1, 0), new PolynomialF1(2, 1, 1, -2), "x^5+x^4-2.0x^3+x^2-2.0x0.0x^3"));
+
+    Arguments[] pols = new Arguments[list.size()];
+    return Stream.of(list.toArray(pols));
+  }
 
 
   @Test
@@ -50,11 +70,16 @@ public class PolynomialLinkedListTest {
   @ParameterizedTest
   @MethodSource("providerForPolynomialsForDivide")
   public void testDividePolynomialLinkedListWithPolynomialF1(PolynomialLinkedList pol1,
-      PolynomialF1 pol2, String expected) {
-    System.out.println(pol1.show());
-    System.out.println(pol2.show());
+  PolynomialF1 pol2, String expected) {
     PolynomialF2 result = pol1.dividePolynomialLinkedListWithPolynomialF1(pol2);
-    System.out.println(result.show());
     assertEquals(result.show(), expected);
+  }
+
+  @ParameterizedTest
+  @MethodSource("providerForPolynomialsForMultiply")
+  public void testMultiplyPolynomialLinkedListWithPolynomialF1(PolynomialLinkedList pol1,
+    PolynomialF1 pol2, String expected) {
+    PolynomialF2 result = pol1.multiplyPolynomialLinkedListWithPolynomialF1(pol2);
+    assertEquals(expected, result.show());
   }
 }
