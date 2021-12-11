@@ -29,6 +29,21 @@ public class PolynomialLinkedList {
     public PolynomialLinkedList() {
         this.head = null;
     }
+    public PolynomialLinkedList(int ... terms) {
+        this.head = null;
+        for (int i = 0; i < terms.length; i++) {
+            if (terms[i] == 0){
+                continue;
+            }
+            int exponent = (terms.length - i)-1;
+            float coef = terms[i];
+            storeTerm(coef, exponent);
+        }
+    }
+
+    public PolynomialLinkedList(PolynomialLinkedList from) {
+        this.head = from.getHead();
+    }
 
     public PolynomialLinkedList(PolynomialF1 from) {
         this.head = null;
@@ -403,7 +418,7 @@ public class PolynomialLinkedList {
         for (int i = 1; i < B.getCoef(0) + 2; i++) {
             startA = this.head;
             while (startA != null) {
-                int exponentR = (int) (B.getCoef(0) + 1 - i) + startA.getExponent();                
+                int exponentR = (int) (B.getCoef(0) + 1 - i) + startA.getExponent();
                 float coefficientR = startA.getCoefficient() * B.getCoef(i);
 
                 R.insertTerm(coefficientR, exponentR);
