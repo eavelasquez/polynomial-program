@@ -390,22 +390,25 @@ public class PolynomialF2 {
      * @return the polynomial whose value is {@code (this(x) / that(x))}
      */
     public PolynomialF1 dividePolynomialF2WithPolynomialLinkedList(PolynomialLinkedList B) {
-        Node startB = B.getHead();
+        Node startB;
         int exponentR, exponentA;
         float coefficientR, coefficientA;
-        PolynomialF1 R = new PolynomialF1((int) polynomial[1] - startB.getExponent());
+        PolynomialF1 R = new PolynomialF1((int) polynomial[1] - B.getHead().getExponent());
 
-        while (polynomial[1] >= startB.getExponent()) {
-            exponentR = (int) polynomial[1] - startB.getExponent();
-            coefficientR = polynomial[2] / startB.getCoefficient();
+        while (polynomial[1] >= B.getHead().getExponent()) {
+            exponentR = (int) polynomial[1] - B.getHead().getExponent();
+            coefficientR = polynomial[2] / B.getHead().getCoefficient();
 
+            R.insertTerm(coefficientR, exponentR);
+
+            startB = B.getHead();
             while (startB != null) {
                 exponentA = exponentR + startB.getExponent();
                 coefficientA = coefficientR * startB.getCoefficient();
 
-                R.insertTerm(-coefficientA, exponentA);
+                this.insertTerm(-coefficientA, exponentA);
 
-                startB.getNext();
+                startB = startB.getNext();
             }
         }
 
