@@ -38,6 +38,18 @@ public class PolynomialF2 {
         this.polynomial = new float[this.size];
         this.polynomial[0] = n;
     }
+    public PolynomialF2(int n, float ... terms) {
+        this(n);
+        for (int i = 0; i < terms.length; i++) {
+            if (terms[i] == 0){
+                continue;
+            }
+            int exponent = (terms.length - i)-1;
+            float coef = terms[i];
+            this.storeTerm(coef, exponent);
+        }
+
+    }
 
     public PolynomialF2(PolynomialLinkedList from) {
         int degree = from.getHead().getExponent();
