@@ -146,20 +146,18 @@ public class PolynomialLinkedList {
                 if (sum != 0) {
                     start.setCoefficient(sum);
                 } else if (start == this.head) {
-                    this.head = this.head.getNext();
+                    this.head = start.getNext();
                 } else {
                     previous.setNext(start.getNext());
                 }
             } else {
                 newNode = new Node(coefficient, exponent);
-                newNode.setNext(start);
 
                 if (start == this.head) {
                     this.head = newNode;
-                } else if (previous != null) {
+                } else {
+                    newNode.setNext(start);
                     previous.setNext(newNode);
-                } else if (this.head == null) {
-                    this.head = newNode;
                 }
             }
         }
@@ -259,7 +257,7 @@ public class PolynomialLinkedList {
 
         while (start != null) {
             result += start.getCoefficient() * (Math.pow(x, start.getExponent()));
-            start.getNext();
+            start = start.getNext();
         }
 
         return result;
@@ -286,6 +284,8 @@ public class PolynomialLinkedList {
 
             if (exponentA == exponentB) {
                 R.insertTerm(coefficientA + coefficientB, exponentA);
+                startA = startA.getNext();
+                startB = startB.getNext();
             } else if (exponentA > exponentB) {
                 R.insertTerm(coefficientA, exponentA);
                 startA = startA.getNext();
@@ -363,17 +363,18 @@ public class PolynomialLinkedList {
      * @return the polynomial whose value is {@code (this(x) / that(x))}
      */
     public PolynomialLinkedList divide(PolynomialLinkedList B) {
-        Node startA = this.head, startB = B.getHead();
+        Node startA = this.head, startB;
         int exponentR, exponentA;
         float coefficientR, coefficientA;
         PolynomialLinkedList R = new PolynomialLinkedList();
 
-        while ((startA != null && startB != null) && startA.getExponent() >= startB.getExponent()) {
-            exponentR = startA.getExponent() - startB.getExponent();
-            coefficientR = startA.getCoefficient() / startB.getCoefficient();
+        while (startA != null && startA.getExponent() >= B.getHead().getExponent()) {
+            exponentR = startA.getExponent() - B.getHead().getExponent();
+            coefficientR = startA.getCoefficient() / B.getHead().getCoefficient();
 
             R.insertTerm(coefficientR, exponentR);
 
+            startB = B.getHead();
             while (startB != null) {
                 exponentA = exponentR + startB.getExponent();
                 coefficientA = coefficientR * startB.getCoefficient();
@@ -396,17 +397,18 @@ public class PolynomialLinkedList {
      * @return the polynomial whose value is {@code (this(x) * that(x))}
      */
     public PolynomialF2 multiplyPolynomialLinkedListWithPolynomialF1(PolynomialF1 B) {
-        Node startA = this.head;
+        Node startA;
         PolynomialF2 R = new PolynomialF2(0);
 
         for (int i = 1; i < B.getCoef(0) + 2; i++) {
+            startA = this.head;
             while (startA != null) {
-                int exponentR = startA.getExponent() + (int) (B.getCoef(0) + 1 - i);
+                int exponentR = (int) (B.getCoef(0) + 1 - i) + startA.getExponent();                
                 float coefficientR = startA.getCoefficient() * B.getCoef(i);
 
                 R.insertTerm(coefficientR, exponentR);
 
-                startA.getNext();
+                startA = startA.getNext();
             }
         }
 
@@ -421,29 +423,25 @@ public class PolynomialLinkedList {
      * @return the polynomial whose value is {@code (this(x) / that(x))}
      */
     public PolynomialF2 dividePolynomialLinkedListWithPolynomialF1(PolynomialF1 B) {
-        PolynomialLinkedList newFormB = new PolynomialLinkedList(B);
-        PolynomialLinkedList resultDivide = this.divide(newFormB);
-        PolynomialF2 result = new PolynomialF2(resultDivide);
         Node startA = this.head;
         int exponentR, exponentA;
         float coefficientR, coefficientA;
         PolynomialF2 R = new PolynomialF2(0);
-        coefficientR = startA.getCoefficient() / B.getCoef(1);
 
         while (startA != null && startA.getExponent() >= B.getCoef(0)) {
-            exponentR = (int) (startA.getExponent() - B.getCoef(0));
+            exponentR = startA.getExponent() - (int) (B.getCoef(0));
             coefficientR = startA.getCoefficient() / B.getCoef(1);
 
             R.insertTerm(coefficientR, exponentR);
 
             for (int i = 1; i < B.getCoef(0) + 2; i++) {
-                exponentA = exponentR - (int) (B.getCoef(0) + 1 - i);
+                exponentA = exponentR + (int) (B.getCoef(0) + 1 - i);
                 coefficientA = coefficientR * B.getCoef(i);
 
                 this.insertTerm(-coefficientA, exponentA);
-
             }
-            startA.getNext();
+
+            startA = startA.getNext();
         }
 
         return R;

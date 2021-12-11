@@ -1,7 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties. To change this
- * template file, choose Tools | Templates and open the template in the editor.
- */
+/******************************************************************************
+ * Compilation: javac Polynomial.java
+ * Execution: java Polynomial
+ *
+ * Polynomials with vector form 1 and 2, also with Linked List.
+ *
+ * % java Polynomial
+ *
+ ******************************************************************************/
 package com.polynomialprogram.app;
 
 import javax.swing.JOptionPane;
@@ -12,21 +17,27 @@ import org.beryx.textio.TextIoFactory;
 import org.beryx.textio.TextTerminal;
 
 /**
+ * The {@code Polynomial} class represents a polynomial with vector form 1 and 2, also with Linked
+ * List.
  *
  * @author ev
+ * @author drestrepom
  */
 public class PolynomialProgram {
 
     /**
-     * @param args the command line arguments
+     * Unit tests the polynomial data type.
+     *
+     * @param args the command-line arguments (none)
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        menuPpal();
+        mainMenu();
     }
 
-    // Método para el menú principal
-    public static void menuPpal() {
+    /**
+     * This method displays the main menu of the application.
+     */
+    public static void mainMenu() {
         TextIO textIO = TextIoFactory.getTextIO();
         TextTerminal<?> terminal = textIO.getTextTerminal();
         TerminalProperties<?> props = terminal.getProperties();
@@ -34,29 +45,31 @@ public class PolynomialProgram {
         props.setPromptBold(true);
         props.setPromptUnderline(true);
         props.setPromptColor("cyan");
-        terminal.println("***MENU PRINCIPAL***");
+
+        terminal.println("*** MENÚ PRINCIPAL ***");
 
         props.setPromptUnderline(false);
         props.setPromptBold(false);
 
-        String[] options = {"Polinomio en vector forma 1", "Polinomio en vector forma 2",
-                "Polinomio en lista", "Polinomios combinados", "salir"};
+        String[] options = {"Polinomio Vector Forma 1", "Polinomio Vector Forma 2",
+                "Polinomio Lista Ligada", "Polinomios Combinados", "Salir"};
         props.setInputColor("red");
+
         String option =
-                textIO.newStringInputReader().withNumberedPossibleValues(options).read("Options");
-        props.setPromptColor("withe");
+                textIO.newStringInputReader().withNumberedPossibleValues(options).read("Opciones");
+        props.setPromptColor("white");
 
         try {
-            if (option == options[0]) {
+            if (option.equals(options[0])) {
                 terminal.println();
                 menuPolynomialF1(textIO, terminal, props);
-            } else if (option == options[1]) {
+            } else if (option.equals(options[1])) {
                 menuPolynomialF2(textIO, terminal, props);
-            } else if (option == options[2]) {
-                menuPolista(textIO, terminal, props);
-            } else if (option == options[3]) {
+            } else if (option.equals(options[2])) {
+                menuPolynomialLinkedList(textIO, terminal, props);
+            } else if (option.equals(options[3])) {
                 menuPolinomiosCombinados(textIO, terminal, props);
-            } else if (options[4] == options[4]) {
+            } else if (options[4].equals(options[4])) {
                 System.exit(0);
             }
         } catch (NumberFormatException exc) {
@@ -64,18 +77,24 @@ public class PolynomialProgram {
         }
     }
 
-    // Método para el menú de polinomio en vector forma 1
+    /**
+     * This method displays the menu of polynomials vector form 1 of the application.
+     *
+     * @param textIO
+     * @param terminal
+     * @param props
+     */
     public static void menuPolynomialF1(TextIO textIO, TextTerminal<?> terminal,
             TerminalProperties<?> props) {
 
-        String[] options =
-                {"Mostrar", "Evaluar", "Sumar", "Multiplicar", "Dividir", "Comparar", "salir"};
+        String[] options = {"Mostrar", "Evaluar", "Sumar", "Multiplicar", "Dividir", "Comparar",
+                "Ir al menú principal", "Salir"};
 
         props.setPromptBold(true);
         props.setPromptUnderline(true);
         props.setPromptColor("green");
 
-        terminal.println("Polinomio vector forma 1");
+        terminal.println("Polinomio Vector Forma 1");
         props.setPromptUnderline(false);
         props.setPromptBold(false);
 
@@ -86,7 +105,7 @@ public class PolynomialProgram {
         props.setPromptBold(false);
 
         props.setInputColor("yellow");
-        int degree_a = textIO.newIntInputReader().read("grado");
+        int degree_a = textIO.newIntInputReader().read("Grado");
         polynomialA = new PolynomialF1(degree_a);
         polynomialA.enterTerms(textIO, terminal, props);
 
@@ -95,21 +114,21 @@ public class PolynomialProgram {
         terminal.println("Ingrese el polinomio 2");
         props.setPromptBold(false);
 
-        int degree_b = textIO.newIntInputReader().read("grado");
+        int degree_b = textIO.newIntInputReader().read("Grado");
         polynomialB = new PolynomialF1(degree_b);
         polynomialB.enterTerms(textIO, terminal, props);
 
-        String option = "salir";
+        String option = "Salir";
         do {
             terminal.println();
             option = textIO.newStringInputReader().withNumberedPossibleValues(options)
                     .read("Options");
-            if (option == options[0]) {
+            if (option.equals(options[0])) {
                 // Mostrar
                 terminal.println();
 
                 props.setPromptUnderline(true);
-                terminal.print("polinomio 1: ");
+                terminal.print("Polinomio 1: ");
                 props.setPromptUnderline(false);
 
                 props.setPromptColor("yellow");
@@ -117,7 +136,7 @@ public class PolynomialProgram {
 
                 props.setPromptColor("green");
                 props.setPromptUnderline(true);
-                terminal.print("polinomio 2");
+                terminal.print("Polinomio 2: ");
                 props.setPromptUnderline(false);
 
                 props.setPromptColor("yellow");
@@ -128,16 +147,16 @@ public class PolynomialProgram {
 
                 terminal.println();
 
-            } else if (option == options[1]) {
+            } else if (option.equals(options[1])) {
                 // evaluar
-                float xValue = textIO.newFloatInputReader().read("valor de x");
+                float xValue = textIO.newFloatInputReader().read("Valor de x");
                 float result = polynomialA.evaluate(xValue);
 
                 terminal.print("resultado evaluar: ");
                 props.setPromptColor("yellow");
                 terminal.println(String.format("%f", result));
                 props.setPromptColor("green");
-            } else if (option == options[2]) {
+            } else if (option.equals(options[2])) {
                 // sumar
                 terminal.println();
                 polynomialC = polynomialA.add(polynomialB);
@@ -157,7 +176,7 @@ public class PolynomialProgram {
                 terminal.println(polynomialC.show());
                 props.setPromptColor("green");
 
-            } else if (option == options[3]) {
+            } else if (option.equals(options[3])) {
                 // multiplicar
                 terminal.println();
                 polynomialC = polynomialA.multiply(polynomialB);
@@ -176,7 +195,7 @@ public class PolynomialProgram {
                 props.setPromptColor("yellow");
                 terminal.println(polynomialC.show());
                 props.setPromptColor("green");
-            } else if (option == options[4]) {
+            } else if (option.equals(options[4])) {
                 // Dividir
                 terminal.println();
                 if (polynomialA.getCoef(0) >= polynomialB.getCoef(0)) {
@@ -201,18 +220,25 @@ public class PolynomialProgram {
                     terminal.println("No se puede dividir");
                     props.setPromptColor("green");
                 }
-            } else if (option == options[5]) {
+            } else if (option.equals(options[5])) {
                 // Comparar
-
+            } else if (option.equals(options[6])) {
+                mainMenu();
             } else {
                 System.exit(0);
             }
 
-        } while (option != "salir");
+        } while (!"Salir".equalsIgnoreCase(option));
 
     }
 
-    // Método para el menú de polinomio en vector forma 2
+    /**
+     * This method displays the menu of polynomials vector form 2 of the application.
+     *
+     * @param textIO
+     * @param terminal
+     * @param props
+     */
     public static void menuPolynomialF2(TextIO textIO, TextTerminal<?> terminal,
             TerminalProperties<?> props) {
         PolynomialF2 A, B, C, CopiaA;
@@ -274,7 +300,7 @@ public class PolynomialProgram {
                             JOptionPane.showMessageDialog(null, "No se puede divide");
                         }
                     }
-                    case 6 -> menuPpal();
+                    case 6 -> mainMenu();
                     case 0 -> System.exit(0);
                     default -> JOptionPane.showMessageDialog(null, "opcion no válida");
                 }// fin switch
@@ -285,14 +311,16 @@ public class PolynomialProgram {
     }
 
     // Método para el menú de polinomio en lista
-    public static void menuPolista(TextIO textIO, TextTerminal<?> terminal,
+    public static void menuPolynomialLinkedList(TextIO textIO, TextTerminal<?> terminal,
             TerminalProperties<?> props) {
         PolynomialLinkedList A, B, C, CopiaA;
 
         A = new PolynomialLinkedList();
+        JOptionPane.showMessageDialog(null, "Polinomio 1");
         A.enterTerms();
 
         B = new PolynomialLinkedList();
+        JOptionPane.showMessageDialog(null, "Polinomio 2");
         B.enterTerms();
 
         int opcion = -1;
@@ -313,7 +341,7 @@ public class PolynomialProgram {
                         valorx = Float.parseFloat(
                                 JOptionPane.showInputDialog("Ingrese el valor para x "));
                         JOptionPane.showMessageDialog(null,
-                                "El reusltado es " + A.evaluate(valorx));
+                                "El resultado es " + A.evaluate(valorx));
                     }
                     case 3 -> {
                         C = A.add(B);
@@ -341,7 +369,7 @@ public class PolynomialProgram {
                                             + "\nDatos del residuo\n" + CopiaA.show());
                         }
                     }
-                    case 6 -> menuPpal();
+                    case 6 -> mainMenu();
                     case 0 -> System.exit(0);
                     // default: JOptionPane.showMessageDialog(null,"opcion no válida"); // default:
                     // JOptionPane.showMessageDialog(null,"opcion no válida");
@@ -381,37 +409,102 @@ public class PolynomialProgram {
                                 JOptionPane.showInputDialog("Ingrese el grado del polinomio 1"));
                         A = new PolynomialF1(grado);
                         A.enterTerms(textIO, terminal, props);
-                        canterm = Integer.parseInt(JOptionPane
-                                .showInputDialog("Cantidad de términos del polinomio 2"));
-                        M = new PolynomialF2(canterm);
-                        M.enterTerms(canterm);
-                        L = A.addPolynomialF1WithPolynomialF2(M);
-                    }
-                    case 2 -> {
-                    }
-                    case 3 -> {
-                        PolynomialF1 A;
-                        PolynomialF2 M;
-                        PolynomialLinkedList L;
-                        grado = Integer.parseInt(
-                                JOptionPane.showInputDialog("Ingrese el grado del polinomio 1"));
-                        A = new PolynomialF1(grado);
-                        A.enterTerms(textIO, terminal, props);
+
                         canterm = Integer.parseInt(JOptionPane
                                 .showInputDialog("Cantidad de términos del polinomio 2"));
                         M = new PolynomialF2(canterm);
                         M.enterTerms(canterm);
 
                         L = A.addPolynomialF1WithPolynomialF2(M);
+
                         JOptionPane.showMessageDialog(null,
-                                "Datos del polinomio 1\n" + A.show() + "\nDatos del polinomio 2\n"
-                                        + M.show() + "\nDatos del polinomio Suma\n" + L.show());
+                        "Datos del polinomio 1\n" + A.show() + "\nDatos del polinomio 2\n"
+                                + M.show() + "\nDatos del polinomio Suma\n" + L.show());
+                    }
+                    case 2 -> {
+                        // polvf2=polista/polvf1
+                        PolynomialF2 L;
+                        PolynomialLinkedList A, CopiaA;
+                        A = new PolynomialLinkedList();
+                        JOptionPane.showMessageDialog(null, "Ingrese el grado del polinomio 1");
+                        A.enterTerms();
+
+                        grado = Integer.parseInt(
+                                JOptionPane.showInputDialog("Ingrese el grado del polinomio 2"));
+                        PolynomialF1 M = new PolynomialF1(grado);
+                        M.enterTerms(textIO, terminal, props);
+
+                        if (A.getHead().getExponent() >= M.getCoef(0)) {
+                            CopiaA = A.copy();
+
+                            L = A.dividePolynomialLinkedListWithPolynomialF1(M);
+                            JOptionPane.showMessageDialog(null,
+                                    "Datos del polinomio 1\n" + A.show()
+                                            + "\nDatos del polinomio 2\n" + M.show()
+                                            + "\nDatos del polinomio division\n" + L.show()
+                                            + "\nDatos del residuo\n" + CopiaA.show());
+                        }
+                    }
+                    case 3 -> {
+                        // polvf1=polvf2/polista
+                        PolynomialF2 A, CopiaA;
+                        PolynomialLinkedList M;
+                        PolynomialF1 L;
+
+                        canterm = Integer.parseInt(JOptionPane
+                                .showInputDialog("Cantidad de términos del polinomio 1"));
+                        A = new PolynomialF2(canterm);
+                        A.enterTerms(canterm);
+
+                        M = new PolynomialLinkedList();
+                        JOptionPane.showMessageDialog(null, "Ingrese el grado del polinomio 2");
+                        M.enterTerms();
+
+                        if (A.getData(0) >= M.getHead().getExponent()) {
+                            CopiaA = A.copy();
+
+                            L = CopiaA.dividePolynomialF2WithPolynomialLinkedList(M);
+                            JOptionPane.showMessageDialog(null,
+                                    "Datos del polinomio 1\n" + A.show()
+                                            + "\nDatos del polinomio 2\n" + M.show()
+                                            + "\nDatos del polinomio division\n" + L.show()
+                                            + "\nDatos del residuo\n" + CopiaA.show());
+                        }
                     }
                     case 4 -> {
+                        // polvf2=polista*polvf1
+                        PolynomialLinkedList A = new PolynomialLinkedList();
+                        JOptionPane.showMessageDialog(null, "Ingrese el grado del polinomio 1");
+                        A.enterTerms();
+
+                        grado = Integer.parseInt(
+                                JOptionPane.showInputDialog("Ingrese el grado del polinomio 2"));
+                        PolynomialF1 M = new PolynomialF1(grado);
+                        M.enterTerms(textIO, terminal, props);
+
+                        PolynomialF2 L = A.multiplyPolynomialLinkedListWithPolynomialF1(M);
+
+                        JOptionPane.showMessageDialog(null,
+                                "Datos del polinomio 1\n" + A.show() + "\nDatos del polinomio 2\n"
+                                        + M.show() + "\nDatos del resultado:\n" + L.show());
                     }
                     case 5 -> {
+                        grado = Integer.parseInt(
+                                JOptionPane.showInputDialog("Ingrese el grado del polinomio 1"));
+                        PolynomialF1 A = new PolynomialF1(grado);
+                        A.enterTerms(textIO, terminal, props);
+
+                        canterm = Integer.parseInt(JOptionPane
+                                .showInputDialog("Cantidad de términos del polinomio 2"));
+                        PolynomialF2 M = new PolynomialF2(canterm);
+                        M.enterTerms(canterm);
+
+                        boolean flag = A.comparisonPolynomialF1WithPolynomialF2(M);
+
+                        JOptionPane.showMessageDialog(null, "Datos del polinomio 1\n" + A.show()
+                                + "\nDatos del polinomio 2\n" + M.show() + "\nson iguales:\n" + flag);
                     }
-                    case 6 -> menuPpal();
+                    case 6 -> mainMenu();
                     case 0 -> System.exit(0);
                     default -> JOptionPane.showMessageDialog(null, "opcion no válida");
                 }// fin switch

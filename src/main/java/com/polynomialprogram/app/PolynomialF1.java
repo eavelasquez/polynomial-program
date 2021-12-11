@@ -1,11 +1,15 @@
-/**
- * **************************************************************************** Compilation: javac
- * PolynomialF1.java Execution: java PolynomialF1
+/******************************************************************************
+ * Compilation:  javac PolynomialF1.java
+ * Execution:    java PolynomialF1
  *
  * Polynomials Vector Form 1.
  *
- * % java PolynomialF1 p(x) = 4x^3 + 3x^2 + 2x + 1 q(x) = 3x^2 + 5 p(x) + q(x) = 4x^3 + 6x^2 + 2x +
- * 6 p(x) * q(x) = 12x^5 + 9x^4 + 26x^3 + 18x^2 + 10x + 5 p(x) / q(x)
+ * % java PolynomialF1
+ * p(x)         = 4x^3 + 3x^2 + 2x + 1
+ * q(x)         = 3x^2 + 5
+ * p(x) + q(x) = 4x^3 + 6x^2 + 2x + 6
+ * p(x) * q(x) = 12x^5 + 9x^4 + 26x^3 + 18x^2 + 10x + 5
+ * p(x) / q(x)  = (4/3)x^1 + 1
  *
  */
 package com.polynomialprogram.app;
@@ -409,7 +413,7 @@ public class PolynomialF1 {
 
         while (i < coef[0] + 2 && j < B.getData(0) * 2 + 1) {
             exponentA = (int) coef[0] + 1 - i;
-            exponentB = (int) B.getData(1);
+            exponentB = (int) B.getData(j);
 
             if (exponentA > exponentB) {
                 R.insertTerm(coef[i], exponentA);
